@@ -1,9 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Upload, FileText, CheckCircle, AlertCircle, Loader2, Info, Trash2 } from 'lucide-react';
+import { Upload, FileText, AlertCircle, Loader2, Info } from 'lucide-react';
 import { uploadTemplate, checkTemplateExists, deleteTemplate } from '@/lib/storage';
+import { TagItem } from './TagItem';
+import { StatusCard } from './StatusCard';
 
+/**
+ * Admin component for managing official barangay document templates (.docx).
+ * Allows uploading, deleting, and provides a guide for template tags.
+ */
 export const TemplateManager: React.FC = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [isGuideExpanded, setIsGuideExpanded] = useState(false);
@@ -13,19 +19,30 @@ export const TemplateManager: React.FC = () => {
   });
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Fetches the existence status of templates from storage.
+   */
   const fetchStatuses = async () => {
-    const clearanceExists = await checkTemplateExists('Clearance');
-    const indigencyExists = await checkTemplateExists('Indigency');
-    setStatuses({
-      Clearance: clearanceExists,
-      Indigency: indigencyExists,
-    });
+    try {
+      const clearanceExists = await checkTemplateExists('Clearance');
+      const indigencyExists = await checkTemplateExists('Indigency');
+      setStatuses({
+        Clearance: clearanceExists,
+        Indigency: indigencyExists,
+      });
+    } catch (err) {
+      console.error('Failed to fetch template statuses', err);
+    }
   };
 
   useEffect(() => {
     fetchStatuses();
   }, []);
 
+  /**
+   * Handles deletion of a template.
+   * @param type - The document type to delete.
+   */
   const handleDelete = async (type: 'Clearance' | 'Indigency') => {
     if (!confirm(`Are you sure you want to delete the ${type} template?`)) return;
     
@@ -37,6 +54,10 @@ export const TemplateManager: React.FC = () => {
     }
   };
 
+  /**
+   * Handles file selection and automated template uploading.
+   * @param e - The change event from the file input.
+   */
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -68,7 +89,6 @@ export const TemplateManager: React.FC = () => {
     try {
       await uploadTemplate(file, type);
       await fetchStatuses();
-      alert(`Success! ${type} template updated.`);
     } catch (err) {
       setError('Failed to upload template. Ensure the "document-templates" bucket exists in Supabase.');
     } finally {
@@ -107,20 +127,7 @@ export const TemplateManager: React.FC = () => {
             The system will automatically find and replace them with the actual resident data.
           </p>
 
-          <div className="mb-8 p-4 bg-amber-50 rounded-2xl border border-amber-100 flex items-start gap-3">
-            <div className="p-1.5 bg-amber-100 rounded-lg">
-              <CheckCircle className="w-4 h-4 text-amber-700" />
-            </div>
-            <div>
-              <p className="text-xs font-black text-amber-900 uppercase tracking-tight mb-1">Styling Tip: Making Text Bold</p>
-              <p className="text-[11px] text-amber-800 leading-relaxed">
-                To make a value appear **BOLD** in the final document, simply **bold the tag itself** in your Word template (e.g. <strong>{'{fullName}'}</strong>). The system inherits the style you apply to the placeholder.
-              </p>
-            </div>
-          </div>
-          
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {/* Core Tags */}
             <TagItem tag="{fullName}" label="Resident's Name" />
             <TagItem tag="{age}" label="Current Age" />
             <TagItem tag="{birthday}" label="Month Day, Year" />
@@ -129,8 +136,6 @@ export const TemplateManager: React.FC = () => {
             <TagItem tag="{occupation}" label="Resident's Job" />
             <TagItem tag="{address}" label="Home Address" />
             <TagItem tag="{phoneNo}" label="Mobile Number" />
-            
-            {/* Context Tags */}
             <TagItem tag="{purpose}" label="Reason for Request" />
             <TagItem tag="{currentDate}" label="Complete Date" />
             <TagItem tag="{day}" label="Day (e.g. 18th)" />
@@ -189,50 +194,7 @@ export const TemplateManager: React.FC = () => {
             {error}
           </div>
         )}
-
-        <div className="mt-8 pt-8 border-t border-slate-100">
-          <p className="text-[10px] leading-relaxed font-medium text-slate-400 bg-slate-50 p-4 rounded-xl border border-slate-100">
-            <strong>Naming Convention:</strong> The system identifies documents by their name. 
-            Make sure your file contains the word <strong>"Clearance"</strong> or <strong>"Indigency"</strong>.
-            Uploading a new file will automatically replace the existing version.
-          </p>
-        </div>
       </div>
     </div>
   );
 };
-
-const TagItem = ({ tag, label, isImage = false }: { tag: string; label: string; isImage?: boolean }) => (
-  <div className={`bg-slate-50 border p-3 rounded-xl transition-colors ${isImage ? 'border-purple-200 bg-purple-50/30' : 'border-slate-200 hover:border-cyan-300'}`}>
-    <code className={`text-xs font-black block mb-1 ${isImage ? 'text-purple-700' : 'text-cyan-700'}`}>{tag}</code>
-    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">{label}</span>
-  </div>
-);
-
-const StatusCard = ({ label, isActive, filename, onDelete }: { label: string; isActive: boolean; filename: string; onDelete: () => void }) => (
-  <div className={`p-6 rounded-[1.5rem] border-2 flex items-center justify-between ${isActive ? 'bg-emerald-50/50 border-emerald-100' : 'bg-slate-50 border-slate-100'}`}>
-    <div className="flex items-center gap-4">
-      <div className={`p-3 rounded-xl ${isActive ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
-        {isActive ? <CheckCircle className="w-6 h-6" /> : <AlertCircle className="w-6 h-6" />}
-      </div>
-      <div>
-        <p className="text-xs font-black text-slate-400 uppercase tracking-widest leading-none mb-1">{isActive ? 'Ready' : 'Missing'}</p>
-        <h4 className="font-bold text-slate-900">{label}</h4>
-        {isActive && <p className="text-[10px] text-slate-500 font-mono mt-1">{filename}</p>}
-      </div>
-    </div>
-
-    {isActive && (
-      <button 
-        onClick={(e) => {
-          e.stopPropagation();
-          onDelete();
-        }}
-        className="p-3 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all cursor-pointer"
-        title="Delete Template"
-      >
-        <Trash2 className="w-5 h-5" />
-      </button>
-    )}
-  </div>
-);
