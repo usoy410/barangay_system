@@ -147,3 +147,56 @@ on conflict (id) do nothing;
 
 create policy "Anyone can upload incident photos" on storage.objects for insert with check (bucket_id = 'incident-photos');
 create policy "Anyone can view incident photos" on storage.objects for select using (bucket_id = 'incident-photos');
+
+-- 8. Audit Logging System
+-- This table tracks all modifications to sensitive data for accountability and DPA compliance.
+create table public.audit_logs (
+    id uuid default uuid_generate_v4() primary key,
+    table_name text not null,
+    record_id uuid not null,
+    action text not null,
+    old_data jsonb,
+    new_data jsonb,
+    changed_by uuid references public.residents(id), -- Tracks which admin/official made the change
+    created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- RLS for Audit Logs: Only admins and officials can see history
+alter table public.audit_logs enable row level security;
+create policy "Officials can view audit logs" on public.audit_logs for select using (
+    exists (
+        select 1 from public.residents 
+        where id = auth.uid() 
+        and role in ('Official', 'Admin')
+    )
+);
+
+-- Automated Audit Function
+create or replace function public.process_audit_log()
+returns trigger as $$
+begin
+    if (TG_OP = 'UPDATE') then
+        insert into public.audit_logs (table_name, record_id, action, old_data, new_data, changed_by)
+        values (TG_TABLE_NAME, OLD.id, TG_OP, to_jsonb(OLD), to_jsonb(NEW), auth.uid());
+        return NEW;
+    elsif (TG_OP = 'DELETE') then
+        insert into public.audit_logs (table_name, record_id, action, old_data, changed_by)
+        values (TG_TABLE_NAME, OLD.id, TG_OP, to_jsonb(OLD), auth.uid());
+        return OLD;
+    elsif (TG_OP = 'INSERT') then
+        insert into public.audit_logs (table_name, record_id, action, new_data, changed_by)
+        values (TG_TABLE_NAME, NEW.id, TG_OP, to_jsonb(NEW), auth.uid());
+        return NEW;
+    end if;
+    return null;
+end;
+$$ language plpgsql security definer;
+
+-- Apply Audit Trigger to sensitive tables
+create trigger audit_residents_changes
+after insert or update or delete on public.residents
+for each row execute procedure public.process_audit_log();
+
+create trigger audit_requests_changes
+after update or delete on public.clearance_requests
+for each row execute procedure public.process_audit_log();
