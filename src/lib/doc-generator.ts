@@ -15,21 +15,8 @@ export async function generateDocx(
   filename: string
 ) {
   try {
-    const zip = new PizZip(templateBuffer);
-    const doc = new Docxtemplater(zip, {
-      paragraphLoop: true,
-      linebreaks: true,
-    });
-
-    // Render the document (replace placeholders)
-    doc.render(data);
-
-    // Get the generated content as a blob
-    const out = doc.getZip().generate({
-      type: 'blob',
-      mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    });
-
+    const out = await generateDocxBlob(templateBuffer, data);
+    
     // Save the file
     saveAs(out, filename);
     
@@ -38,6 +25,29 @@ export async function generateDocx(
     console.error('Error generating document:', error);
     throw error;
   }
+}
+
+/**
+ * Generates a filled DOCX document as a Blob.
+ */
+export async function generateDocxBlob(
+  templateBuffer: ArrayBuffer,
+  data: Record<string, any>
+) {
+  const zip = new PizZip(templateBuffer);
+  const doc = new Docxtemplater(zip, {
+    paragraphLoop: true,
+    linebreaks: true,
+  });
+
+  // Render the document (replace placeholders)
+  doc.render(data);
+
+  // Get the generated content as a blob
+  return doc.getZip().generate({
+    type: 'blob',
+    mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  });
 }
 
 /**

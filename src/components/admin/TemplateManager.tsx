@@ -98,10 +98,14 @@ export const TemplateManager: React.FC = () => {
               The system will automatically replace them during issuance.
             </p>
             
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               <TagItem tag="{fullName}" label="Resident's Name" />
               <TagItem tag="{purpose}" label="Reason for Request" />
-              <TagItem tag="{currentDate}" label="Date of Issuance" />
+              <TagItem tag="{currentDate}" label="Complete Date" />
+              <TagItem tag="{day}" label="Day (e.g. 18th)" />
+              <TagItem tag="{month}" label="Full Month" />
+              <TagItem tag="{year}" label="Full Year" />
+              <TagItem tag="{barangay}" label="Barangay Name" />
             </div>
           </div>
         </div>

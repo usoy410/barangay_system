@@ -109,3 +109,30 @@ export async function uploadIncidentPhoto(file: File) {
 
   return publicUrl;
 }
+/**
+ * Uploads a temporary document preview.
+ * @param blob - The generated .docx blob.
+ * @param fileName - Target filename.
+ * @returns The public URL for the preview.
+ */
+export async function uploadPreviewDoc(blob: Blob, fileName: string) {
+  const filePath = `previews/${Date.now()}_${fileName}`;
+
+  const { error } = await supabase.storage
+    .from(BUCKET_NAME)
+    .upload(filePath, blob, {
+      contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      upsert: true
+    });
+
+  if (error) {
+    console.error('Error uploading preview:', error);
+    throw error;
+  }
+
+  const { data: { publicUrl } } = supabase.storage
+    .from(BUCKET_NAME)
+    .getPublicUrl(filePath);
+
+  return publicUrl;
+}
