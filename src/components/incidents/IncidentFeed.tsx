@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AlertTriangle, Clock, CheckCircle, ShieldAlert } from 'lucide-react';
+import { AlertTriangle, Clock, CheckCircle, ShieldAlert, MapPin } from 'lucide-react';
 import type { Incident } from '@/types/database';
 
 interface IncidentFeedProps {
@@ -63,6 +63,14 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
               <p className="text-slate-600 text-sm leading-relaxed mb-4">
                 {incident.description}
               </p>
+              
+              {incident.location && (
+                <div className="flex items-center gap-2 text-xs font-medium text-slate-400 mb-4">
+                  <MapPin className="w-3.5 h-3.5" />
+                  <span>{incident.location}</span>
+                </div>
+              )}
+
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
                 <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-600">
                   {incident.reporter_name[0]}

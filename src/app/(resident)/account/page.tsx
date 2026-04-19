@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -6,7 +6,6 @@ import { getClientSession, clearDemoSession } from '@/lib/auth-demo';
 import { getResidentByMobile } from '@/lib/residents';
 import { getResidentRequests } from '@/lib/requests';
 import { User, MapPin, Phone, Calendar, LogOut, ChevronRight, Clock, CheckCircle2, AlertCircle, FileText } from 'lucide-react';
-import CitizenBottomNav from '@/components/CitizenBottomNav';
 import type { Resident, ClearanceRequest } from '@/types/database';
 
 export default function AccountPage() {
@@ -53,10 +52,38 @@ export default function AccountPage() {
     );
   }
 
+  if (!resident) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-center font-atkinson pb-32">
+        <div className="w-24 h-24 bg-amber-50 text-amber-500 rounded-[2rem] flex items-center justify-center mb-6 shadow-xl shadow-amber-900/10 border border-amber-100">
+          <AlertCircle className="w-12 h-12" />
+        </div>
+        <h1 className="text-3xl font-black text-slate-900 mb-2">Profile Not Found</h1>
+        <p className="text-slate-500 max-w-sm mb-8 font-medium">
+          We couldn't find a registered resident profile for this mobile number. You may need to complete your registration first.
+        </p>
+        <div className="flex flex-col gap-3 w-full max-w-xs">
+          <button 
+            onClick={() => router.push('/register')}
+            className="w-full bg-slate-900 text-white font-black py-4 rounded-2xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
+          >
+            Create My Profile
+          </button>
+          <button 
+            onClick={handleLogout}
+            className="w-full bg-white border border-slate-200 text-slate-600 font-bold py-4 rounded-2xl hover:bg-slate-50 transition-all"
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-slate-50 pb-32 font-atkinson">
+    <div className="min-h-screen bg-slate-50 font-atkinson">
       {/* Header Profile Section */}
-      <div className="bg-slate-900 pt-20 pb-20 px-6 text-white relative overflow-hidden">
+      <div className="bg-slate-900 pt-32 pb-20 px-6 text-white relative overflow-hidden">
         <div className="relative z-10 max-w-2xl mx-auto flex items-center gap-6">
           <div className="w-24 h-24 bg-cyan-600 rounded-[2rem] flex items-center justify-center shadow-2xl shadow-cyan-900/50">
             <User className="w-12 h-12 text-white" />
@@ -74,7 +101,7 @@ export default function AccountPage() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-6 -mt-10 relative z-20 space-y-6">
+      <div className="max-w-2xl mx-auto px-6 -mt-10 relative z-20 space-y-6 pb-20">
         {/* Info Card */}
         <div className="bg-white rounded-[2rem] p-8 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col gap-6">
           <InfoItem icon={<Phone className="w-5 h-5" />} label="Mobile Number" value={resident?.mobile_number || ''} />
@@ -114,8 +141,6 @@ export default function AccountPage() {
           Sign Out of Portal
         </button>
       </div>
-
-      <CitizenBottomNav />
     </div>
   );
 }
@@ -156,3 +181,5 @@ const RequestStatusCard = ({ request }: { request: ClearanceRequest }) => {
     </div>
   );
 };
+
+

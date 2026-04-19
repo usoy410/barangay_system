@@ -120,7 +120,12 @@ export async function getResidentByMobile(mobile: string) {
     .single();
 
   if (error) {
-    console.error('Error fetching resident by mobile:', error);
+    // PGRST116 is the code for "0 rows found" when using .single()
+    if (error.code === 'PGRST116') {
+      console.warn('No resident found with mobile number:', mobile);
+      return null;
+    }
+    console.error('Error fetching resident by mobile:', error.message, error.code);
     return null;
   }
 

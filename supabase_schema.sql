@@ -46,6 +46,7 @@ create table public.incidents (
     reporter_name text not null,
     title text not null,
     description text not null,
+    location text,
     status text check (status in ('Pending', 'In Progress', 'Resolved', 'Spam')) default 'Pending' not null,
     created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );

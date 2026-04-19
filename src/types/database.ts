@@ -52,6 +52,7 @@ export interface Incident {
   reporter_name: string;
   title: string;
   description: string;
+  location: string;
   status: 'Pending' | 'In Progress' | 'Resolved' | 'Spam';
   created_at: string;
 }

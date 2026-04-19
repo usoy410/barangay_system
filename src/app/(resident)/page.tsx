@@ -5,33 +5,20 @@ import Link from 'next/link';
 import { LogOut, ArrowRight, FileText, AlertTriangle, Bell } from 'lucide-react';
 import { clearDemoSession } from '@/lib/auth-demo';
 import { useRouter } from 'next/navigation';
-import CitizenBottomNav from '@/components/CitizenBottomNav';
 
 export default function CitizenHome() {
   const router = useRouter();
 
-  const handleSignOut = () => {
-    clearDemoSession();
-    router.push('/login');
-  };
-
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-atkinson pb-24 md:pb-0">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-atkinson">
       {/* Mobile-first Header */}
-      <header className="bg-slate-900 text-white pt-12 pb-8 px-6 rounded-b-[2rem] shadow-md relative">
-        <button 
-          onClick={handleSignOut}
-          className="absolute top-6 right-6 p-2 bg-slate-800 rounded-full text-slate-300 hover:text-white transition-colors cursor-pointer"
-          title="Sign Out"
-        >
-          <LogOut className="w-6 h-6" />
-        </button>
+      <header className="bg-slate-900 text-white pt-12 pb-8 md:pt-32 md:pb-12 px-6 rounded-b-[2rem] shadow-md relative">
         <h1 className="text-3xl font-bold mb-2">Magandang Araw!</h1>
         <p className="text-slate-300 text-lg">Welcome to the Barangay Information Portal.</p>
       </header>
 
       <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-8 space-y-8">
-        
+
         {/* Important Notice */}
         <div className="bg-amber-100 border-l-4 border-amber-500 rounded-lg p-5">
           <div className="flex items-start gap-4">
@@ -49,7 +36,7 @@ export default function CitizenHome() {
         <section>
           <h2 className="text-xl font-bold text-slate-800 mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 gap-4">
-            
+
             <Link href="/services" className="bg-white border-2 border-sky-100 p-6 rounded-2xl flex items-center justify-between hover:bg-sky-50 transition-colors shadow-sm cursor-pointer">
               <div className="flex items-center gap-4">
                 <div className="bg-sky-100 p-4 rounded-full text-sky-700">
@@ -79,8 +66,6 @@ export default function CitizenHome() {
           </div>
         </section>
       </main>
-
-      <CitizenBottomNav />
     </div>
   );
 }
