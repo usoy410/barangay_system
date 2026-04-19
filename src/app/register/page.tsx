@@ -16,6 +16,7 @@ export default function RegisterPage() {
     lastName: '',
     gender: 'Male' as 'Male' | 'Female' | 'Other',
     civilStatus: 'Single' as 'Single' | 'Married' | 'Widowed' | 'Separated',
+    occupation: 'Student' as string,
     mobile: '',
     address: '',
     birthDate: '',
@@ -34,6 +35,7 @@ export default function RegisterPage() {
         birth_date: formData.birthDate,
         gender: formData.gender,
         civil_status: formData.civilStatus,
+        occupation: formData.occupation,
         address: formData.address,
         mobile_number: formData.mobile,
         password_hash: formData.password,
@@ -204,6 +206,20 @@ export default function RegisterPage() {
                         <option value="Married">Married</option>
                         <option value="Widowed">Widowed</option>
                         <option value="Separated">Separated</option>
+                      </select>
+                    </div>
+
+                    <div className="relative">
+                      <label className="block text-slate-700 font-bold mb-1.5 text-sm">Occupation</label>
+                      <select 
+                        name="occupation" 
+                        value={formData.occupation}
+                        onChange={handleChange}
+                        className="w-full border-2 border-slate-200 bg-slate-50 px-4 py-3.5 rounded-xl text-slate-900 font-bold focus:border-cyan-500 focus:bg-white focus:outline-none appearance-none transition-all"
+                      >
+                        <option value="Student">Student</option>
+                        <option value="Employed">Employed</option>
+                        <option value="Unemployed">Unemployed</option>
                       </select>
                     </div>
                   </div>

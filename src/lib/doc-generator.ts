@@ -4,14 +4,10 @@ import { saveAs } from 'file-saver';
 
 /**
  * Generates a filled DOCX document from a template and data.
- * 
- * @param templateBuffer - The raw binary of the .docx template
- * @param data - Object containing the values for the placeholders (e.g. { name: 'John' })
- * @param filename - The name of the resulting file to be saved
  */
 export async function generateDocx(
   templateBuffer: ArrayBuffer,
-  data: Record<string, any>,
+  data: Record<string, unknown>,
   filename: string
 ) {
   try {
@@ -32,9 +28,10 @@ export async function generateDocx(
  */
 export async function generateDocxBlob(
   templateBuffer: ArrayBuffer,
-  data: Record<string, any>
+  data: Record<string, unknown>
 ) {
   const zip = new PizZip(templateBuffer);
+  
   const doc = new Docxtemplater(zip, {
     paragraphLoop: true,
     linebreaks: true,
@@ -56,6 +53,13 @@ export async function generateDocxBlob(
  */
 export const DOCUMENT_TAGS = {
   FULL_NAME: '{fullName}',
+  AGE: '{age}',
+  CIVIL_STATUS: '{civilStatus}',
+  BIRTHDAY: '{birthday}',
+  OCCUPATION: '{occupation}',
+  GENDER: '{gender}',
+  ADDRESS: '{address}',
+  PHONE: '{phoneNo}',
   PURPOSE: '{purpose}',
   DATE: '{currentDate}',
 };

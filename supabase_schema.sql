@@ -27,6 +27,8 @@ create table public.residents (
     mobile_number text not null unique,
     password_hash text,
     role text check (role in ('Resident', 'Official', 'Admin')) default 'Resident' not null,
+    occupation text,
+    profile_url text,
     is_archived boolean default false not null,
     created_at timestamp with time zone default timezone('utc'::text, now()) not null,
     updated_at timestamp with time zone default timezone('utc'::text, now()) not null

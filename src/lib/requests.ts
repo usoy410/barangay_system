@@ -2,7 +2,7 @@ import { supabase } from './supabase';
 import type { ClearanceRequest, Resident } from '@/types/database';
 
 export type RequestWithResident = ClearanceRequest & {
-  residents: Pick<Resident, 'first_name' | 'last_name' | 'address'>;
+  residents: Pick<Resident, 'first_name' | 'last_name' | 'address' | 'birth_date' | 'civil_status' | 'gender' | 'occupation' | 'mobile_number'>;
 };
 
 /**
@@ -11,7 +11,7 @@ export type RequestWithResident = ClearanceRequest & {
 export async function getServiceRequests(status?: ClearanceRequest['status']) {
   let query = supabase
     .from('clearance_requests')
-    .select('*, residents(first_name, last_name, address)');
+    .select('*, residents(first_name, last_name, address, birth_date, civil_status, gender, occupation, mobile_number)');
 
   if (status) {
     query = query.eq('status', status);
@@ -58,7 +58,10 @@ export async function updateRequestStatus(id: string, status: ClearanceRequest['
   
   if (status === 'Issued') {
     updates.issued_at = new Date().toISOString();
-    updates.issued_by = issuedBy || null;
+    
+    // Defensive check: Ensure issuedBy is a valid UUID before sending to Supabase
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    updates.issued_by = (issuedBy && uuidRegex.test(issuedBy)) ? issuedBy : null;
   }
 
   const { data, error } = await supabase

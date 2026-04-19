@@ -50,6 +50,7 @@ export const ResidentTable: React.FC<ResidentTableProps> = ({
           <tr className="bg-slate-50 border-b border-slate-200">
             <th className="px-6 py-4 text-sm font-semibold text-slate-900">Full Name</th>
             <th className="px-6 py-4 text-sm font-semibold text-slate-900">Civil Status</th>
+            <th className="px-6 py-4 text-sm font-semibold text-slate-900">Occupation</th>
             <th className="px-6 py-4 text-sm font-semibold text-slate-900">Address</th>
             <th className="px-6 py-4 text-sm font-semibold text-slate-900 text-right">Actions</th>
           </tr>
@@ -78,6 +79,15 @@ export const ResidentTable: React.FC<ResidentTableProps> = ({
               <td className="px-6 py-4 text-sm text-slate-600">
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
                   {resident.civil_status}
+                </span>
+              </td>
+              <td className="px-6 py-4 text-sm text-slate-600">
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                  resident.occupation === 'Student' ? 'bg-blue-100 text-blue-800' :
+                  resident.occupation === 'Employed' ? 'bg-emerald-100 text-emerald-800' :
+                  'bg-amber-100 text-amber-800'
+                }`}>
+                  {resident.occupation || 'N/A'}
                 </span>
               </td>
               <td className="px-6 py-4 text-sm text-slate-600 max-w-xs truncate">

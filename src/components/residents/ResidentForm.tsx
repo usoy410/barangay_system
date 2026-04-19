@@ -33,6 +33,7 @@ export const ResidentForm: React.FC<ResidentFormProps> = ({
     birth_date: initialData.birth_date || '',
     gender: initialData.gender || 'Male',
     civil_status: initialData.civil_status || 'Single',
+    occupation: initialData.occupation || 'Student',
     address: initialData.address || '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -97,6 +98,14 @@ export const ResidentForm: React.FC<ResidentFormProps> = ({
               value={formData.civil_status} 
               onChange={handleChange} 
               options={['Single', 'Married', 'Widowed', 'Separated']} 
+            />
+
+            <SelectField 
+              label="Occupation" 
+              name="occupation" 
+              value={formData.occupation} 
+              onChange={handleChange} 
+              options={['Student', 'Employed', 'Unemployed']} 
             />
 
             <div className="md:col-span-2">

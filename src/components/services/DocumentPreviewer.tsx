@@ -50,7 +50,7 @@ export const DocumentPreviewer: React.FC<DocumentPreviewerProps> = ({
           throw new Error('The template file in Supabase is corrupted or access was denied. Please re-upload it.');
         }
 
-        const data = prepareTemplateData(request);
+        const data = await prepareTemplateData(request);
 
         const blob = await generateDocxBlob(templateBuffer, data);
         const url = await uploadPreviewDoc(blob, `preview_${request.id}.docx`);
@@ -86,7 +86,7 @@ export const DocumentPreviewer: React.FC<DocumentPreviewerProps> = ({
         throw new Error('The template file in Supabase is corrupted. Please re-upload it.');
       }
 
-      const data = prepareTemplateData(request);
+      const data = await prepareTemplateData(request);
 
       await generateDocx(
         templateBuffer, 
@@ -104,8 +104,18 @@ export const DocumentPreviewer: React.FC<DocumentPreviewerProps> = ({
   /**
    * Helper to format data for use in .docx templates.
    */
-  const prepareTemplateData = (req: RequestWithResident) => {
+  const prepareTemplateData = async (req: RequestWithResident) => {
+    const res = req.residents;
     const now = new Date();
+    const birthDate = new Date(res.birth_date);
+    
+    // Calculate Age
+    let age = now.getFullYear() - birthDate.getFullYear();
+    const m = now.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && now.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
     const day = now.getDate();
     const month = now.toLocaleDateString('en-US', { month: 'long' });
     const year = now.getFullYear();
@@ -117,12 +127,19 @@ export const DocumentPreviewer: React.FC<DocumentPreviewerProps> = ({
     };
 
     return {
-      fullName: `${req.residents.first_name} ${req.residents.last_name}`,
+      fullName: `${res.first_name} ${res.last_name}`,
+      age: age,
+      civilStatus: res.civil_status,
+      birthday: birthDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+      occupation: res.occupation || 'N/A',
+      gender: res.gender,
+      address: res.address,
+      phoneNo: res.mobile_number,
       purpose: req.purpose,
       day: getOrdinal(day),
       month: month,
       year: year,
-      barangay: 'San Juan', // You can change this to your actual Barangay name
+      barangay: 'San Juan',
       currentDate: `${month} ${day}, ${year}`,
     };
   };

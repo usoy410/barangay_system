@@ -41,7 +41,9 @@ export default function ServicesPage() {
 
   const handleIssue = async (id: string) => {
     try {
-      await updateRequestStatus(id, 'Issued', 'dev-admin'); // Mock admin ID
+      // In a real app, we would get the actual Admin UUID from the session.
+      // For now, we omit it to avoid the "invalid input syntax for type uuid" error.
+      await updateRequestStatus(id, 'Issued'); 
       setSelectedRequest(null);
       await fetchData();
     } catch (err) {

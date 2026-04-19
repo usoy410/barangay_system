@@ -6,6 +6,7 @@ import { uploadTemplate, checkTemplateExists, deleteTemplate } from '@/lib/stora
 
 export const TemplateManager: React.FC = () => {
   const [isUploading, setIsUploading] = useState(false);
+  const [isGuideExpanded, setIsGuideExpanded] = useState(false);
   const [statuses, setStatuses] = useState({
     Clearance: false,
     Indigency: false,
@@ -86,27 +87,56 @@ export const TemplateManager: React.FC = () => {
       </div>
 
       <div className="p-8">
-        {/* 1. TAG GUIDE (Moved to Top) */}
-        <div className="mb-10 pb-8 border-b border-slate-100 flex flex-col gap-6">
-          <div>
-            <div className="flex items-center gap-2 mb-4">
+        {/* 1. TAG GUIDE (Expandable) */}
+        <div className={`mb-10 pb-8 border-b border-slate-100 transition-all duration-500 overflow-hidden ${isGuideExpanded ? 'max-h-[2000px]' : 'max-h-[140px]'}`}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
               <Info className="w-5 h-5 text-cyan-600" />
               <h4 className="text-sm font-black text-slate-900 uppercase tracking-widest">Template Tag Guide</h4>
             </div>
-            <p className="text-sm text-slate-500 mb-6 font-medium leading-relaxed">
-              Open your Microsoft Word document and type these exact tags where you want the information to appear. 
-              The system will automatically replace them during issuance.
-            </p>
-            
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-              <TagItem tag="{fullName}" label="Resident's Name" />
-              <TagItem tag="{purpose}" label="Reason for Request" />
-              <TagItem tag="{currentDate}" label="Complete Date" />
-              <TagItem tag="{day}" label="Day (e.g. 18th)" />
-              <TagItem tag="{month}" label="Full Month" />
-              <TagItem tag="{year}" label="Full Year" />
-              <TagItem tag="{barangay}" label="Barangay Name" />
+            <button 
+              onClick={() => setIsGuideExpanded(!isGuideExpanded)}
+              className="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full text-[10px] font-black uppercase tracking-widest transition-colors cursor-pointer"
+            >
+              {isGuideExpanded ? 'Minimize Guide' : 'Expand Full Guide'}
+            </button>
+          </div>
+          
+          <p className="text-sm text-slate-500 mb-6 font-medium leading-relaxed">
+            Open your Microsoft Word document and type these exact tags where you want information to appear. 
+            The system will automatically find and replace them with the actual resident data.
+          </p>
+
+          <div className="mb-8 p-4 bg-amber-50 rounded-2xl border border-amber-100 flex items-start gap-3">
+            <div className="p-1.5 bg-amber-100 rounded-lg">
+              <CheckCircle className="w-4 h-4 text-amber-700" />
             </div>
+            <div>
+              <p className="text-xs font-black text-amber-900 uppercase tracking-tight mb-1">Styling Tip: Making Text Bold</p>
+              <p className="text-[11px] text-amber-800 leading-relaxed">
+                To make a value appear **BOLD** in the final document, simply **bold the tag itself** in your Word template (e.g. <strong>{'{fullName}'}</strong>). The system inherits the style you apply to the placeholder.
+              </p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            {/* Core Tags */}
+            <TagItem tag="{fullName}" label="Resident's Name" />
+            <TagItem tag="{age}" label="Current Age" />
+            <TagItem tag="{birthday}" label="Month Day, Year" />
+            <TagItem tag="{civilStatus}" label="Resident Status" />
+            <TagItem tag="{gender}" label="Resident Gender" />
+            <TagItem tag="{occupation}" label="Resident's Job" />
+            <TagItem tag="{address}" label="Home Address" />
+            <TagItem tag="{phoneNo}" label="Mobile Number" />
+            
+            {/* Context Tags */}
+            <TagItem tag="{purpose}" label="Reason for Request" />
+            <TagItem tag="{currentDate}" label="Complete Date" />
+            <TagItem tag="{day}" label="Day (e.g. 18th)" />
+            <TagItem tag="{month}" label="Full Month" />
+            <TagItem tag="{year}" label="Full Year" />
+            <TagItem tag="{barangay}" label="Barangay Name" />
           </div>
         </div>
 
@@ -172,9 +202,9 @@ export const TemplateManager: React.FC = () => {
   );
 };
 
-const TagItem = ({ tag, label }: { tag: string; label: string }) => (
-  <div className="bg-slate-50 border border-slate-200 p-3 rounded-xl hover:border-cyan-300 transition-colors">
-    <code className="text-xs font-black text-cyan-700 block mb-1">{tag}</code>
+const TagItem = ({ tag, label, isImage = false }: { tag: string; label: string; isImage?: boolean }) => (
+  <div className={`bg-slate-50 border p-3 rounded-xl transition-colors ${isImage ? 'border-purple-200 bg-purple-50/30' : 'border-slate-200 hover:border-cyan-300'}`}>
+    <code className={`text-xs font-black block mb-1 ${isImage ? 'text-purple-700' : 'text-cyan-700'}`}>{tag}</code>
     <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">{label}</span>
   </div>
 );
