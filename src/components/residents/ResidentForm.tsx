@@ -3,22 +3,22 @@
 import React, { useState } from 'react';
 import { X, Save, AlertCircle } from 'lucide-react';
 import type { Resident } from '@/types/database';
+import { InputField, SelectField } from './FormFields';
 
 interface ResidentFormProps {
+  /** Existing data if editing, or empty for new resident */
   initialData?: Partial<Resident>;
+  /** Async callback when the form is submitted */
   onSubmit: (data: any) => Promise<void>;
+  /** Callback when the form is closed/cancelled */
   onCancel: () => void;
+  /** Form title (e.g., "Add New Resident") */
   title: string;
 }
 
 /**
  * A comprehensive form for adding or editing residents.
  * Includes basic validation and a clean, split-column layout for readability.
- * 
- * @param initialData - Existing data if editing, or empty for new resident.
- * @param onSubmit - Async callback when the form is submitted.
- * @param onCancel - Callback when the form is closed/cancelled.
- * @param title - Form title (e.g., "Add New Resident").
  */
 export const ResidentForm: React.FC<ResidentFormProps> = ({ 
   initialData = {}, 
@@ -51,7 +51,7 @@ export const ResidentForm: React.FC<ResidentFormProps> = ({
 
     try {
       await onSubmit(formData);
-      onCancel(); // Close form on success
+      onCancel();
     } catch (err: any) {
       setError(err.message || 'An error occurred while saving the resident.');
     } finally {
@@ -62,7 +62,6 @@ export const ResidentForm: React.FC<ResidentFormProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-        {/* Header */}
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0">
           <h2 className="text-xl font-bold text-slate-900">{title}</h2>
           <button onClick={onCancel} className="p-2 hover:bg-slate-100 rounded-full transition-colors cursor-pointer">
@@ -143,29 +142,3 @@ export const ResidentForm: React.FC<ResidentFormProps> = ({
     </div>
   );
 };
-
-// --- Helper Components ---
-
-const InputField = ({ label, ...props }: any) => (
-  <div>
-    <label className="block text-sm font-semibold text-slate-700 mb-2">{label}</label>
-    <input
-      {...props}
-      className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 outline-none transition-all text-slate-900"
-    />
-  </div>
-);
-
-const SelectField = ({ label, options, ...props }: any) => (
-  <div>
-    <label className="block text-sm font-semibold text-slate-700 mb-2">{label}</label>
-    <select
-      {...props}
-      className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-4 focus:ring-cyan-100 focus:border-cyan-500 outline-none transition-all bg-white text-slate-900"
-    >
-      {options.map((opt: string) => (
-        <option key={opt} value={opt}>{opt}</option>
-      ))}
-    </select>
-  </div>
-);
