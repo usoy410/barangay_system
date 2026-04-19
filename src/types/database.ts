@@ -25,8 +25,8 @@ export interface Resident {
   mobile_number: string;
   password_hash: string | null;
   role: 'Resident' | 'Official' | 'Admin';
-  occupation: string | null;
-  profile_url: string | null;
+  occupation?: string | null;
+  profile_url?: string | null;
   is_archived: boolean;
   created_at: string;
   updated_at: string;
