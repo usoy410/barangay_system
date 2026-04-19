@@ -2,7 +2,7 @@ import { supabase } from './supabase';
 import type { ClearanceRequest, Resident } from '@/types/database';
 
 export type RequestWithResident = ClearanceRequest & {
-  residents: Pick<Resident, 'first_name', 'last_name', 'address'>;
+  residents: Pick<Resident, 'first_name' | 'last_name' | 'address'>;
 };
 
 /**

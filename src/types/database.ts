@@ -22,6 +22,9 @@ export interface Resident {
   gender: 'Male' | 'Female' | 'Other';
   civil_status: 'Single' | 'Married' | 'Widowed' | 'Separated';
   address: string;
+  mobile_number: string;
+  password_hash: string | null;
+  role: 'Resident' | 'Official' | 'Admin';
   is_archived: boolean;
   created_at: string;
   updated_at: string;

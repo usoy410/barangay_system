@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, Home, ArrowLeft, Phone, Lock, MapPin, Calendar, Heart, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
+import { createResident } from '@/lib/residents';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -17,19 +18,50 @@ export default function RegisterPage() {
     password: '',
   });
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulating registration logic
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      // Split name into first and last
+      const nameParts = formData.fullName.trim().split(' ');
+      const lastName = nameParts.length > 1 ? nameParts.pop() || '' : 'Resident';
+      const firstName = nameParts.join(' ') || formData.fullName;
+
+      await createResident({
+        first_name: firstName,
+        last_name: lastName,
+        middle_name: null,
+        birth_date: formData.birthDate,
+        gender: 'Other', // Default for self-reg, can be updated in profile
+        civil_status: 'Single',
+        address: formData.address,
+        mobile_number: formData.mobile,
+        password_hash: formData.password, // In a real app, hash this!
+        role: 'Resident',
+        is_archived: false,
+        household_id: null
+      });
+
+      alert('Registration successful! Please login.');
       router.push('/login');
-    }, 1500);
+    } catch (err) {
+      console.error(err);
+      alert('Registration failed. Please check your details.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-atkinson">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-atkinson text-slate-900">
       {/* Header with Back Button */}
       <div className="p-6 md:p-12 flex items-center">
         <Link href="/login" className="inline-flex items-center gap-2 text-slate-500 font-bold hover:text-slate-900 transition-colors">
@@ -43,7 +75,7 @@ export default function RegisterPage() {
           
           <div className="bg-cyan-700 p-10 text-white relative">
             <Heart className="absolute top-10 right-10 w-20 h-20 text-cyan-600/30 rotate-12" />
-            <h1 className="text-3xl font-bold tracking-tight mb-2">Join the Community</h1>
+            <h1 className="text-3xl font-bold tracking-tight mb-2 text-white">Join the Community</h1>
             <p className="text-cyan-100 font-medium text-lg">Register your household profile to access digital services.</p>
           </div>
 
@@ -57,6 +89,9 @@ export default function RegisterPage() {
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                     <input 
                       required 
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleChange}
                       type="text" 
                       className="w-full border-2 border-slate-200 bg-slate-50 pl-12 pr-4 py-4 rounded-xl text-lg text-slate-900 focus:border-cyan-500 focus:bg-white focus:outline-none transition-all" 
                       placeholder="Juan Dela Cruz" 
@@ -70,6 +105,9 @@ export default function RegisterPage() {
                     <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                     <input 
                       required 
+                      name="birthDate"
+                      value={formData.birthDate}
+                      onChange={handleChange}
                       type="date" 
                       className="w-full border-2 border-slate-200 bg-slate-50 pl-12 pr-4 py-4 rounded-xl text-lg text-slate-900 focus:border-cyan-500 focus:bg-white focus:outline-none transition-all cursor-pointer" 
                     />
@@ -82,6 +120,9 @@ export default function RegisterPage() {
                     <MapPin className="absolute left-4 top-4 w-5 h-5 text-slate-400" />
                     <textarea 
                       required 
+                      name="address"
+                      value={formData.address}
+                      onChange={handleChange}
                       rows={2}
                       className="w-full border-2 border-slate-200 bg-slate-50 pl-12 pr-4 py-4 rounded-xl text-lg text-slate-900 focus:border-cyan-500 focus:bg-white focus:outline-none transition-all resize-none" 
                       placeholder="Street, Barangay, City" 
@@ -97,6 +138,9 @@ export default function RegisterPage() {
                     <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                     <input 
                       required 
+                      name="mobile"
+                      value={formData.mobile}
+                      onChange={handleChange}
                       type="text" 
                       className="w-full border-2 border-slate-200 bg-slate-50 pl-12 pr-4 py-4 rounded-xl text-lg text-slate-900 focus:border-cyan-500 focus:bg-white focus:outline-none transition-all" 
                       placeholder="Enter 11-digit mobile" 
@@ -110,6 +154,9 @@ export default function RegisterPage() {
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                     <input 
                       required 
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
                       type={showPassword ? 'text' : 'password'} 
                       className="w-full border-2 border-slate-200 bg-slate-50 pl-12 pr-12 py-4 rounded-xl text-lg text-slate-900 focus:border-cyan-500 focus:bg-white focus:outline-none transition-all" 
                       placeholder="Min. 8 characters" 
