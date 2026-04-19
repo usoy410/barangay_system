@@ -24,11 +24,14 @@ src/
 
 1. **Clone the repository**
 2. **Install dependencies**: `npm install`
+
 3. **Set up Environment Variables**: Create a `.env.local` file with:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-key
-   ```
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-key
+```
+
 4. **Run the dev server**: `npm run dev`
 
 ## ⚖️ Development Standards

@@ -56,11 +56,23 @@ alter table public.residents enable row level security;
 alter table public.clearance_requests enable row level security;
 alter table public.incidents enable row level security;
 
--- Policies (Simplified for development: Auth required for all)
+-- 1. Households: Authenticated users can see all
 create policy "Authenticated users can see all households" on public.households for select using (auth.role() = 'authenticated');
-create policy "Authenticated users can see all residents" on public.residents for select using (auth.role() = 'authenticated');
-create policy "Authenticated users can see all requests" on public.clearance_requests for select using (auth.role() = 'authenticated');
-create policy "Authenticated users can see all incidents" on public.incidents for select using (auth.role() = 'authenticated');
+
+-- 2. Residents: Public can register and look up, Auth (Officials) can manage
+create policy "Anyone can register" on public.residents for insert with check (true);
+create policy "Public can look up residents" on public.residents for select using (true);
+create policy "Authenticated users can manage residents" on public.residents for all using (auth.role() = 'authenticated');
+
+-- 3. Clearance Requests: Public can submit and track, Auth (Officials) can issue
+create policy "Anyone can submit requests" on public.clearance_requests for insert with check (true);
+create policy "Public can track requests" on public.clearance_requests for select using (true);
+create policy "Authenticated users can manage requests" on public.clearance_requests for all using (auth.role() = 'authenticated');
+
+-- 4. Incidents: Public can report and track, Auth (Officials) can manage
+create policy "Anyone can report an incident" on public.incidents for insert with check (true);
+create policy "Public can track incidents" on public.incidents for select using (true);
+create policy "Authenticated users can manage incidents" on public.incidents for all using (auth.role() = 'authenticated');
 
 -- Trigger for updated_at in residents
 create or replace function public.handle_updated_at()
