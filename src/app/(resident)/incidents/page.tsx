@@ -1,16 +1,40 @@
 "use client";
 
-import React, { useState } from 'react';
-import { AlertTriangle, Camera, MapPin } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { AlertTriangle, Camera, MapPin, X, ImageIcon } from 'lucide-react';
 import { reportIncident } from '@/lib/incidents';
 import { getClientSession } from '@/lib/auth-demo';
+import { uploadIncidentPhoto } from '@/lib/storage';
 
 export default function CitizenIncidents() {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [type, setType] = useState('');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    }
+  };
+
+  const removeFile = () => {
+    setSelectedFile(null);
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(null);
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   const handleReport = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,11 +44,17 @@ export default function CitizenIncidents() {
       const session = getClientSession();
       const reporterName = session?.name || 'Anonymous Citizen';
 
+      let imageUrl = '';
+      if (selectedFile) {
+        imageUrl = await uploadIncidentPhoto(selectedFile);
+      }
+
       await reportIncident({
         reporter_name: reporterName,
         title: type.charAt(0).toUpperCase() + type.slice(1) + " Incident",
         description: description,
-        location: location
+        location: location,
+        image_url: imageUrl
       });
 
       setIsSubmitting(false);
@@ -34,6 +64,7 @@ export default function CitizenIncidents() {
       setType('');
       setLocation('');
       setDescription('');
+      removeFile();
 
       setTimeout(() => {
         setSubmitted(false);
@@ -112,15 +143,48 @@ export default function CitizenIncidents() {
                 </div>
 
                 <div className="pt-2">
-                  <button type="button" className="w-full flex items-center justify-center gap-2 border-2 border-slate-300 text-slate-700 font-bold py-4 rounded-xl text-lg hover:bg-slate-50 transition-colors cursor-pointer min-h-[44px]">
-                    <Camera className="w-5 h-5" /> Attach Photo
-                  </button>
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    ref={fileInputRef} 
+                    onChange={handleFileSelect} 
+                    className="hidden" 
+                  />
+                  
+                  {!previewUrl ? (
+                    <button 
+                      type="button" 
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full flex items-center justify-center gap-2 border-2 border-dashed border-slate-300 text-slate-500 font-bold py-8 rounded-xl text-lg hover:border-red-500 hover:text-red-500 transition-colors cursor-pointer bg-slate-50"
+                    >
+                      <Camera className="w-6 h-6" /> 
+                      <div className="text-left">
+                        <p>Attach a Photo</p>
+                        <p className="text-xs font-medium opacity-60">Help us understand the situation better</p>
+                      </div>
+                    </button>
+                  ) : (
+                    <div className="relative rounded-xl overflow-hidden border-2 border-slate-200">
+                      <img src={previewUrl} alt="Preview" className="w-full h-64 object-cover" />
+                      <button 
+                        type="button" 
+                        onClick={removeFile}
+                        className="absolute top-4 right-4 bg-slate-900/80 text-white p-2 rounded-full hover:bg-red-600 transition-all"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                      <div className="absolute bottom-0 left-0 right-0 bg-slate-900/60 backdrop-blur-sm text-white p-3 flex items-center gap-2">
+                        <ImageIcon className="w-4 h-4" />
+                        <span className="text-xs font-bold truncate">{selectedFile?.name}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="w-full bg-red-600 text-white font-bold py-5 rounded-xl text-xl hover:bg-red-700 transition-colors mt-4 cursor-pointer disabled:opacity-50 min-h-[44px]"
+                  className="w-full bg-red-600 text-white font-black py-5 rounded-2xl text-xl hover:bg-red-700 transition-all mt-4 cursor-pointer disabled:opacity-50 shadow-xl shadow-red-900/10 active:scale-[0.98] min-h-[44px]"
                 >
                   {isSubmitting ? 'Sending Alert...' : 'Submit Report'}
                 </button>

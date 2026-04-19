@@ -50,7 +50,7 @@ export default function CitizenNavigation() {
       <header className={`hidden md:flex fixed top-0 left-0 right-0 h-20 z-50 items-center px-12 justify-between transition-all duration-300 ${
         isScrolled 
           ? `${activeThemeClass}/95 backdrop-blur-md shadow-lg border-b border-white/10` 
-          : 'bg-transparent'
+          : 'bg-slate-900/10 backdrop-blur-md'
       }`}>
         <Link href="/" className="flex items-center gap-2 group cursor-pointer">
           <div className="bg-white/10 p-2 rounded-xl text-white group-hover:bg-white/20 transition-colors border border-white/10">

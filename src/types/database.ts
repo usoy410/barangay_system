@@ -53,6 +53,20 @@ export interface Incident {
   title: string;
   description: string;
   location: string;
+  image_url?: string;
   status: 'Pending' | 'In Progress' | 'Resolved' | 'Spam';
   created_at: string;
+}
+
+/**
+ * Represents a community announcement or alert.
+ */
+export interface Announcement {
+  id: string;
+  title: string;
+  content: string;
+  category: 'General' | 'Emergency' | 'Event' | 'Holiday';
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }

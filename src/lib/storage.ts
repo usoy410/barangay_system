@@ -83,3 +83,29 @@ export async function deleteTemplate(type: 'Clearance' | 'Indigency') {
 
   return true;
 }
+
+/**
+ * Uploads an incident photo to Supabase Storage.
+ * @param file - The image file to upload.
+ * @returns The public URL of the uploaded image.
+ */
+export async function uploadIncidentPhoto(file: File) {
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
+  const filePath = `${fileName}`;
+
+  const { data, error } = await supabase.storage
+    .from('incident-photos')
+    .upload(filePath, file);
+
+  if (error) {
+    console.error('Error uploading incident photo:', error);
+    throw error;
+  }
+
+  const { data: { publicUrl } } = supabase.storage
+    .from('incident-photos')
+    .getPublicUrl(filePath);
+
+  return publicUrl;
+}
