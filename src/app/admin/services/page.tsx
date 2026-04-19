@@ -13,6 +13,7 @@ import { FileText, Award, ShieldCheck, Download, Users, Inbox, Settings, Upload,
 export default function ServicesPage() {
   const [residents, setResidents] = useState<Resident[]>([]);
   const [requests, setRequests] = useState<RequestWithResident[]>([]);
+  const [activeTab, setActiveTab] = useState<'pending' | 'history'>('pending');
   const [selectedRequest, setSelectedRequest] = useState<RequestWithResident | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
@@ -24,7 +25,8 @@ export default function ServicesPage() {
       const { data: resData } = await getResidents();
       setResidents(resData);
       
-      const reqData = await getServiceRequests('Pending');
+      // Fetch all requests to organize into tabs
+      const reqData = await getServiceRequests();
       setRequests(reqData);
     } catch (err) {
       console.error('Failed to fetch data:', err);
@@ -46,6 +48,11 @@ export default function ServicesPage() {
       alert('Failed to issue document.');
     }
   };
+
+  const filteredRequests = requests.filter(req => {
+    if (activeTab === 'pending') return req.status === 'Pending';
+    return req.status === 'Issued' || req.status === 'Void';
+  });
 
   return (
     <React.Fragment>
@@ -75,13 +82,30 @@ export default function ServicesPage() {
 
         {/* INCOMING REQUESTS QUEUE */}
         <div className="mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <Inbox className="w-5 h-5 text-slate-400" />
-            <h2 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Incoming Requests</h2>
-            <div className="h-px flex-grow bg-slate-100" />
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+            <div className="flex items-center gap-3">
+              <Inbox className="w-5 h-5 text-slate-400" />
+              <h2 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Service Queue</h2>
+            </div>
+            
+            <div className="flex bg-slate-100 p-1 rounded-xl">
+              <button 
+                onClick={() => setActiveTab('pending')}
+                className={`px-6 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'pending' ? 'bg-white text-cyan-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+              >
+                Incoming
+              </button>
+              <button 
+                onClick={() => setActiveTab('history')}
+                className={`px-6 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'history' ? 'bg-white text-cyan-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+              >
+                History
+              </button>
+            </div>
           </div>
+
           <ServiceRequestQueue 
-            requests={requests}
+            requests={filteredRequests}
             isLoading={isQueueLoading}
             onViewRequest={setSelectedRequest}
           />

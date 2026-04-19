@@ -97,20 +97,30 @@ export const IncidentFeed: React.FC<IncidentFeedProps> = ({
                 </div>
               </div>
 
-              <div className="flex flex-row sm:flex-col gap-2 w-full sm:w-auto">
-                {['In Progress', 'Resolved', 'Spam'].map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => onStatusUpdate(incident.id, s as any)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                      incident.status === s 
-                        ? 'bg-slate-900 text-white cursor-default' 
-                        : 'bg-slate-50 text-slate-600 hover:bg-cyan-50 hover:text-cyan-700 cursor-pointer'
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
+              <div className="flex flex-col gap-2 w-full sm:w-auto self-start">
+                {['Pending', 'In Progress', 'Resolved', 'Spam'].map((s) => {
+                  const isActive = incident.status === s;
+                  const isPending = s === 'Pending';
+                  
+                  // Hide Pending button as a selection option, it's the default state
+                  if (isPending && !isActive) return null;
+
+                  return (
+                    <button
+                      key={s}
+                      onClick={() => !isActive && onStatusUpdate(incident.id, s as any)}
+                      className={`
+                        px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-200
+                        ${isActive 
+                          ? 'bg-slate-900 text-white shadow-lg shadow-slate-200' 
+                          : 'bg-slate-50 text-slate-400 hover:bg-white hover:text-cyan-600 hover:shadow-md cursor-pointer border border-transparent hover:border-slate-100'
+                        }
+                      `}
+                    >
+                      {s}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

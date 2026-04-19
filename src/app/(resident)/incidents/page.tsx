@@ -42,7 +42,15 @@ export default function CitizenIncidents() {
     
     try {
       const session = getClientSession();
-      const reporterName = session?.name || 'Anonymous Citizen';
+      if (!session) {
+        throw new Error('Not logged in');
+      }
+
+      const { getResidentByMobile } = await import('@/lib/residents');
+      const profile = await getResidentByMobile(session.mobile);
+      
+      const reporterName = profile ? `${profile.first_name} ${profile.last_name}` : (session?.name || 'Anonymous Citizen');
+      const residentId = profile?.id;
 
       let imageUrl = '';
       if (selectedFile) {
@@ -50,6 +58,7 @@ export default function CitizenIncidents() {
       }
 
       await reportIncident({
+        resident_id: residentId,
         reporter_name: reporterName,
         title: type.charAt(0).toUpperCase() + type.slice(1) + " Incident",
         description: description,

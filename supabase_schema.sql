@@ -47,6 +47,7 @@ create table public.clearance_requests (
 -- 4. Incidents Table
 create table public.incidents (
     id uuid default uuid_generate_v4() primary key,
+    resident_id uuid references public.residents(id) on delete set null,
     reporter_name text not null,
     title text not null,
     description text not null,

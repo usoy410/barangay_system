@@ -12,6 +12,7 @@ import { AlertTriangle, Plus, ShieldAlert } from 'lucide-react';
  */
 export default function IncidentsPage() {
   const [incidents, setIncidents] = useState<Incident[]>([]);
+  const [activeTab, setActiveTab] = useState<'active' | 'archive'>('active');
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchIncidents = useCallback(async () => {
@@ -30,34 +31,50 @@ export default function IncidentsPage() {
     fetchIncidents();
   }, [fetchIncidents]);
 
-
-
   const handleStatusUpdate = async (id: string, status: Incident['status']) => {
     await updateIncidentStatus(id, status);
     await fetchIncidents();
   };
 
+  const filteredIncidents = incidents.filter(i => {
+    if (activeTab === 'active') return i.status === 'Pending' || i.status === 'In Progress';
+    return i.status === 'Resolved' || i.status === 'Spam';
+  });
+
   return (
     <React.Fragment>
-
       <main className="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 font-lexend">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-red-100 text-red-700 rounded-xl">
+              <div className="p-2 bg-red-100 text-red-700 rounded-xl shadow-sm">
                 <AlertTriangle className="w-6 h-6" />
               </div>
-              <h1 className="text-4xl font-lexend font-black text-slate-900 tracking-tight">Security Feed</h1>
+              <h1 className="text-4xl font-black text-slate-900 tracking-tight">Security Feed</h1>
             </div>
-            <p className="text-slate-500 font-medium">Real-time incident reporting and community safety monitoring.</p>
+            <p className="text-slate-500 font-medium">Monitoring community safety and incident reports.</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <h2 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Recent Reports</h2>
+            <div className="flex items-center justify-between mb-8 p-1.5 bg-slate-100 rounded-2xl">
+              <button 
+                onClick={() => setActiveTab('active')}
+                className={`flex-1 py-3 font-black text-xs uppercase tracking-widest rounded-xl transition-all ${activeTab === 'active' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+              >
+                Active Feed
+              </button>
+              <button 
+                onClick={() => setActiveTab('archive')}
+                className={`flex-1 py-3 font-black text-xs uppercase tracking-widest rounded-xl transition-all ${activeTab === 'archive' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+              >
+                Archived History
+              </button>
+            </div>
+
             <IncidentFeed 
-              incidents={incidents} 
+              incidents={filteredIncidents} 
               isLoading={isLoading} 
               onStatusUpdate={handleStatusUpdate} 
             />

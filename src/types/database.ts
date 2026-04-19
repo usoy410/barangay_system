@@ -49,6 +49,7 @@ export interface ClearanceRequest {
  */
 export interface Incident {
   id: string;
+  resident_id?: string;
   reporter_name: string;
   title: string;
   description: string;
