@@ -8,19 +8,30 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-source-sans);
   --font-mono: var(--font-geist-mono);
+  --font-atkinson: var(--font-atkinson);
+  --font-lexend: var(--font-lexend);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #171717; /* Keep it dark for now to avoid visibility issues on light components */
   }
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: #0f172a; /* Force dark slate for body text */
+}
+
+input, select, textarea, option {
+  color: #0f172a !important; /* Force dark slate for all form elements */
+  background-color: #ffffff !important; /* Ensure white background for inputs */
+}
+
+::placeholder {
+  color: #475569 !important; /* slate-600 for even better contrast */
+  opacity: 1;
 }
