@@ -7,15 +7,28 @@ import type { Incident } from '@/types/database';
  */
 
 /**
- * Fetches the feed of incidents.
+ * Fetches the feed of incidents with pagination support and filtering.
  * 
+ * @param from - Start index (0-based).
+ * @param to - End index (0-based).
+ * @param statuses - Optional array of statuses to filter by.
  * @returns A promise resolving to an array of incident records.
  */
-export async function getIncidents() {
-  const { data, error } = await supabase
+export async function getIncidents(from?: number, to?: number, statuses?: Incident['status'][]) {
+  let query = supabase
     .from('incidents')
     .select('*')
     .order('created_at', { ascending: false });
+
+  if (statuses && statuses.length > 0) {
+    query = query.in('status', statuses);
+  }
+
+  if (from !== undefined && to !== undefined) {
+    query = query.range(from, to);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error('Error fetching incidents:', error);
@@ -23,6 +36,29 @@ export async function getIncidents() {
   }
 
   return data as Incident[];
+}
+
+/**
+ * Gets the total count of incidents, optionally filtered by status.
+ * @param status - filter by incident status
+ */
+export async function getIncidentCount(status?: Incident['status']) {
+  let query = supabase
+    .from('incidents')
+    .select('*', { count: 'exact', head: true });
+
+  if (status) {
+    query = query.eq('status', status);
+  }
+
+  const { count, error } = await query;
+
+  if (error) {
+    console.error('Error getting incident count:', error);
+    return 0;
+  }
+
+  return count || 0;
 }
 
 /**

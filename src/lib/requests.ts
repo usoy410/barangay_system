@@ -7,14 +7,26 @@ export type RequestWithResident = ClearanceRequest & {
 
 /**
  * Fetches all document requests, ideally joined with resident data.
+ * 
+ * @param status - Filter by request status or statuses.
+ * @param from - Start index (0-based).
+ * @param to - End index (0-based).
  */
-export async function getServiceRequests(status?: ClearanceRequest['status']) {
+export async function getServiceRequests(status?: ClearanceRequest['status'] | ClearanceRequest['status'][], from?: number, to?: number) {
   let query = supabase
     .from('clearance_requests')
     .select('*, residents(first_name, last_name, address, birth_date, civil_status, gender, occupation, mobile_number)');
 
   if (status) {
-    query = query.eq('status', status);
+    if (Array.isArray(status)) {
+      query = query.in('status', status);
+    } else {
+      query = query.eq('status', status);
+    }
+  }
+
+  if (from !== undefined && to !== undefined) {
+    query = query.range(from, to);
   }
 
   const { data, error } = await query.order('created_at', { ascending: false });

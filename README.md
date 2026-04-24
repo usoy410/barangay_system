@@ -1,50 +1,64 @@
-# Barangay Information System (BIS)
+# 🏘️ Barangay Management System
 
-A professional, full-stack digital governance platform designed to automate and streamline Barangay operations. From resident management to real-time document issuance, BIS empowers local officials with modern digital tools.
+A comprehensive, real-time digital platform designed to modernize and streamline local government operations at the barangay level. This system bridges the gap between residents and barangay officials through automated workflows and centralized data management.
 
-## ✨ Key Features
+## 📌 What is this system for?
 
-- **📂 Resident Registry 2.0**: Comprehensive member management with support for demographics, occupation tracking, and household grouping.
-- **📄 Document Automation**: High-fidelity document generation using Microsoft Word (`.docx`) templates.
-- **👁️ Real-time Preview**: Instant visualization of populated documents via high-fidelity cloud previewing.
-- **🚨 Incident Reporting**: Community-driven reporting system for tracking and resolving local issues.
-- **📢 Community Alerts**: Real-time announcements and emergency notifications.
-- **🛡️ Secure & Ethical**: Built with Supabase Row Level Security (RLS) and comprehensive audit logging for data privacy.
-- **⚙️ Template Manager**: Centralized admin interface for managing official document formats.
+The **Barangay Management System** is a digital solution tailored for local communities in the Philippines. It serves as a unified hub for resident records, incident reporting, and public service requests. By transitioning from traditional paper-based methods to a robust web-based architecture, the system ensures data integrity, faster service delivery, and improved community engagement.
 
-## 🚀 Tech Stack
+## ⚠️ The Problem
 
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router, Turbopack)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Database/Auth**: [Supabase](https://supabase.com/) (PostgreSQL & GoTrue)
-- **Document Engine**: [docxtemplater](https://docxtemplater.com/) & [PizZip](https://pizzip.org/)
-- **Icons**: [Lucide React](https://lucide.dev/)
+Many barangays still rely on manual, fragmented processes for day-to-day operations:
+- **Inefficient Record-Keeping**: Documenting resident information in physical logbooks leads to data loss and slow retrieval.
+- **Delayed Incident Response**: Reporting public disturbances or emergencies often requires physical presence, delaying resolution.
+- **Tedious Document Processing**: Manual preparation of barangay clearances, certifications, and permits is slow and prone to human error.
+- **Lack of Transparency**: Residents often have no real-time way to track their requests or report community issues.
 
-## 📁 Project Structure
+## ✅ How it Solves the Problem
 
-```text
-src/
-├── app/            # Next.js App Router (Routes & Server Components)
-├── components/     # UI Components (Admin, Services, Residents)
-├── hooks/          # Reusable React logic
-├── lib/            # Business logic (Supabase, Doc Gen, Storage)
-└── types/          # TypeScript Schema & Interface definitions
-```
+This system addresses these challenges by providing:
+- **Digital Resident Database**: A centralized, searchable repository of all resident files for instant access and management.
+- **Automated Document Generation**: One-click generation of certificates (e.g., Barangay Clearance, Indigency) using dynamic templates.
+- **Real-time Incident Monitoring**: A live feed for reporting and tracking community incidents with status updates.
+- **Self-Service Portal**: Residents can request documents and report issues from their own devices, reducing office congestion.
 
-## 🛠 Getting Started
+## 👥 Target Users
 
-1. **Clone the repository**
-2. **Install dependencies**: `npm install`
-3. **Set up Environment Variables**: Create a `.env.local` file with your credentials:
+1.  **Barangay Officials & Staff (Admins)**: Manage resident records, process document requests, monitor incidents, and view community health/security dashboards.
+2.  **Barangay Residents**: Access personalized accounts to request services, track status, and report community-related incidents without visiting the barangay hall.
 
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-key
-   ```
+## 🚀 Core Features
 
-4. **Database Setup**: Run the contents of `supabase_schema.sql` in your Supabase SQL Editor.
-5. **Run the dev server**: `npm run dev`
+-   **Resident Management**: Complete CRUD operations for resident profiles with advanced filtering and search.
+-   **Incident Reporting & Feed**: Residents can submit reports with titles and descriptions; Admins can track resolution status in real-time.
+-   **Service Request Queue**: Management system for document requests (Clearance, Indigency, etc.) with automated status updates.
+-   **Template Management**: Admin controls for document templates, allowing for customizable output formats.
+-   **Document Preview & Export**: Generation of documents in `.docx` and `.pdf` formats using professional-grade templating.
+-   **Real-time Dashboard**: Overview of total residents, pending requests, and active incidents.
+
+## 🛠️ Tools & Libraries Used
+
+### **Core Frameworks**
+-   **Next.js (App Router)**: For server-side rendering, routing, and high-performance web architecture.
+-   **React 19**: Utilizing the latest React features for a reactive and smooth user interface.
+-   **TypeScript**: Ensuring type safety and maintainability across the codebase.
+
+### **Backend & Database**
+-   **Supabase**:
+    -   **PostgreSQL**: For relational data storage.
+    -   **Authentication**: Secure user login and role-based access control.
+    -   **Real-time Features**: Instant UI updates for incident feeds and request queues.
+    -   **Storage**: Secure hosting for document templates and resident attachments.
+
+### **Styling & UI**
+-   **Tailwind CSS v4**: Modern, utility-first styling for a premium aesthetic.
+-   **Lucide React**: A suite of clean, consistent icons for enhanced UX.
+-   **clsx & tailwind-merge**: Utilities for managing dynamic CSS classes.
+
+### **Document Generation**
+-   **docxtemplater & PizZip**: Powering the dynamic generation of `.docx` documents from templates.
+-   **jsPDF**: Enabling high-quality PDF exports for official certifications.
+-   **File-Saver**: Handling client-side file downloads seamlessly.
 
 ---
-
-&copy; 2026 Barangay Information System. Built for efficient, paperless local governance.
+*Built with focus on performance, accessibility, and community impact.*
