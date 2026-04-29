@@ -63,7 +63,7 @@ export default function LoginPage() {
             <Shield className="w-8 h-8" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight">BIS Portal</h1>
-          <p className="text-slate-400 mt-2 font-medium">Digital Barangay Governance</p>
+          <p className="text-slate-400 mt-2 font-medium">Digital na Pamamahala ng Barangay</p>
         </div>
 
         <div className="p-8 md:p-10">
@@ -122,9 +122,9 @@ export default function LoginPage() {
 
           <div className="mt-10 text-center">
             <p className="text-slate-500 font-medium">
-              Don't have an account?{' '}
+              Wala pang account?{' '}
               <Link href="/register" className="text-cyan-700 font-bold hover:underline">
-                Join Here
+                Sumali Dito
               </Link>
             </p>
           </div>

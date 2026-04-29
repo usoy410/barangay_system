@@ -92,19 +92,19 @@ export default function CitizenIncidents() {
           <AlertTriangle className="w-8 h-8 opacity-80" />
           <h1 className="text-3xl font-bold">Report Incident</h1>
         </div>
-        <p className="text-red-100 text-lg">Send alerts directly to the Barangay command center.</p>
+        <p className="text-red-100 text-lg">Magpadala ng alerto nang direkta sa command center ng Barangay.</p>
       </header>
 
       <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-8">
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm">
           {submitted ? (
             <div className="bg-green-100 border-2 border-green-500 text-green-900 p-6 rounded-xl text-center font-bold text-lg">
-              Report submitted successfully! Authorities have been notified and are reviewing the situation.
+              Matagumpay na naipadala ang ulat! Naabisuhan na ang mga awtoridad at sinusuri na ang sitwasyon.
             </div>
           ) : (
             <>
               <p className="text-slate-600 mb-6 font-medium text-lg">
-                Please provide details about the incident. <strong>In case of extreme emergencies, please call 911 directly.</strong>
+                Mangyaring ibigay ang mga detalye tungkol sa insidente. <strong>Sa matitinding emergency, mangyaring tumawag nang direkta sa 911.</strong>
               </p>
               
               <form onSubmit={handleReport} className="space-y-6">
@@ -168,8 +168,8 @@ export default function CitizenIncidents() {
                     >
                       <Camera className="w-6 h-6" /> 
                       <div className="text-left">
-                        <p>Attach a Photo</p>
-                        <p className="text-xs font-medium opacity-60">Help us understand the situation better</p>
+                        <p>Maglakip ng Litrato</p>
+                        <p className="text-xs font-medium opacity-60">Tulungan kaming mas maintindihan ang sitwasyon</p>
                       </div>
                     </button>
                   ) : (

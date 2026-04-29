@@ -81,7 +81,7 @@ export default function CitizenServices() {
         </div>
         <h1 className="text-2xl font-black text-slate-900 mb-2">Registration Required</h1>
         <p className="text-slate-500 max-w-sm mb-8 font-medium">
-          You need a verified resident profile to request official documents online.
+          Kailangan mo ng rehistradong profile para makakuha ng mga dokumento online.
         </p>
         <button 
           onClick={() => router.push('/register')}
@@ -100,7 +100,7 @@ export default function CitizenServices() {
           <FileText className="w-8 h-8 opacity-80" />
           <h1 className="text-3xl font-bold">Services</h1>
         </div>
-        <p className="text-sky-100 text-lg">Request official barangay documents online.</p>
+        <p className="text-sky-100 text-lg">Kumuha ng mga opisyal na dokumento ng barangay online.</p>
       </header>
 
       <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-8">
@@ -118,7 +118,7 @@ export default function CitizenServices() {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">Barangay Clearance</h3>
               </div>
-              <p className="text-slate-600 text-base">For employment, business, or official requirements.</p>
+              <p className="text-slate-600 text-base">Para sa trabaho, negosyo, o iba pang opisyal na pangangailangan.</p>
             </button>
 
             <button 
@@ -131,7 +131,7 @@ export default function CitizenServices() {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">Certificate of Indigency</h3>
               </div>
-              <p className="text-slate-600 text-base">For social services, scholarships, or medical assistance.</p>
+              <p className="text-slate-600 text-base">Para sa social services, scholarship, o tulong medikal.</p>
             </button>
           </div>
         ) : (
@@ -146,7 +146,7 @@ export default function CitizenServices() {
               &larr; Back to Services
             </button>
             <h2 className="text-3xl font-black text-slate-900 mb-2 font-lexend">Request {selectedService}</h2>
-            <p className="text-slate-500 mb-8 font-medium">Please verify your details to process the request.</p>
+            <p className="text-slate-500 mb-8 font-medium">Pakisuri ang iyong mga detalye para maproseso ang request.</p>
             
             {submitted ? (
               <div className="text-center py-10 space-y-6">
@@ -159,7 +159,7 @@ export default function CitizenServices() {
                   <p className="text-4xl font-black text-sky-700 tracking-tighter uppercase">{trackingId}</p>
                 </div>
                 <p className="text-slate-500 font-medium px-4 leading-relaxed">
-                  Your request is now being processed. You can track its status in your <span className="text-sky-600 font-bold cursor-pointer" onClick={() => router.push('/account')}>account dashboard</span>.
+                  Pinoproseso na ang iyong request. Maaari mong subaybayan ang status nito sa iyong <span className="text-sky-600 font-bold cursor-pointer" onClick={() => router.push('/account')}>account dashboard</span>.
                 </p>
                 <button 
                   onClick={() => router.push('/account')}
@@ -195,7 +195,7 @@ export default function CitizenServices() {
                 <div className="bg-sky-50 p-4 rounded-2xl flex items-start gap-4">
                   <AlertTriangle className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
                   <p className="text-sm text-sky-800 font-medium leading-relaxed">
-                    Once submitted, your request will be reviewed by the Barangay Officials. You will need to show your ID during pickup.
+                    Kapag naisumite na, susuriin ito ng mga opisyal ng barangay. Kakailanganin mong magpakita ng ID sa oras ng pagkuha.
                   </p>
                 </div>
 

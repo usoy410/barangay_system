@@ -14,7 +14,7 @@ export default function CitizenHome() {
       {/* Mobile-first Header */}
       <header className="bg-slate-900 text-white pt-12 pb-8 md:pt-32 md:pb-12 px-6 rounded-b-[2rem] shadow-md relative">
         <h1 className="text-3xl font-bold mb-2">Magandang Araw!</h1>
-        <p className="text-slate-300 text-lg">Welcome to the Barangay Information Portal.</p>
+        <p className="text-slate-300 text-lg">Maligayang pagdating sa Barangay Information Portal.</p>
       </header>
 
       <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-8 space-y-8">
@@ -26,7 +26,7 @@ export default function CitizenHome() {
             <div>
               <h2 className="font-bold text-amber-900 text-lg mb-1">Community Assembly</h2>
               <p className="text-amber-800 text-base">
-                Join us this Saturday at 9:00 AM at the Barangay Plaza. Everyone is welcome.
+                Samahan kami ngayong Sabado ng 9:00 AM sa Barangay Plaza. Lahat ay inaanyayahan.
               </p>
             </div>
           </div>
@@ -44,7 +44,7 @@ export default function CitizenHome() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900">Request Documents</h3>
-                  <p className="text-slate-600 text-sm">Clearance, Indigency</p>
+                  <p className="text-slate-600 text-sm">Clearance, Indigency, at iba pa</p>
                 </div>
               </div>
               <ArrowRight className="w-6 h-6 text-slate-400" />
@@ -57,7 +57,7 @@ export default function CitizenHome() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-900">Report an Incident</h3>
-                  <p className="text-slate-600 text-sm">Emergencies, concerns</p>
+                  <p className="text-slate-600 text-sm">Mga emergency at reklamo</p>
                 </div>
               </div>
               <ArrowRight className="w-6 h-6 text-slate-400" />

@@ -76,7 +76,7 @@ export default function RegisterPage() {
       <div className="p-6 md:p-12 flex items-center">
         <Link href="/login" className="inline-flex items-center gap-2 text-slate-500 font-bold hover:text-slate-900 transition-colors">
           <ArrowLeft className="w-5 h-5" />
-          <span>Back to Login</span>
+          <span>Bumalik sa Login</span>
         </Link>
       </div>
 
@@ -86,7 +86,7 @@ export default function RegisterPage() {
           <div className="bg-cyan-700 p-10 text-white relative">
             <Heart className="absolute top-10 right-10 w-20 h-20 text-cyan-600/30 rotate-12" />
             <h1 className="text-3xl font-bold tracking-tight mb-2 text-white">Join the Community</h1>
-            <p className="text-cyan-100 font-medium text-lg">Register your resident profile to access digital services.</p>
+            <p className="text-cyan-100 font-medium text-lg">Irehistro ang iyong profile bilang residente para magamit ang mga digital services.</p>
           </div>
 
           <div className="p-8 md:p-12">
