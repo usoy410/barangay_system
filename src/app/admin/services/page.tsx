@@ -261,6 +261,11 @@ export default function ServicesPage() {
         <DocumentRequestModal 
           residents={residents} 
           onClose={() => setIsModalOpen(false)} 
+          onRequestAdded={() => {
+            fetchCounts();
+            setPage(0);
+            fetchRequests(0, true);
+          }}
         />
       )}
 
@@ -308,8 +313,8 @@ const ServiceCard = ({ icon, title, description, onClick, disabled = false }: an
     </p>
     {!disabled && (
       <div className="flex items-center gap-2 text-cyan-600 text-sm font-black uppercase tracking-widest">
-        <span>Issue Now</span>
-        <Download className="w-4 h-4" />
+        <span>Add to Queue</span>
+        <Inbox className="w-4 h-4" />
       </div>
     )}
   </div>

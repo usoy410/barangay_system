@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FileText, X, Download, AlertCircle, Search } from 'lucide-react';
-import { generateDocument, downloadDocument } from '@/lib/documents';
+import { FileText, X, AlertCircle, Search, PlusCircle } from 'lucide-react';
+import { submitServiceRequest } from '@/lib/requests';
 import type { Resident } from '@/types/database';
 
 interface DocumentRequestModalProps {
   residents: Resident[];
   onClose: () => void;
+  onRequestAdded: () => void;
 }
 
 /**
@@ -17,7 +18,7 @@ interface DocumentRequestModalProps {
  * @param residents - Array of residents to search from.
  * @param onClose - Callback to close the modal.
  */
-export const DocumentRequestModal: React.FC<DocumentRequestModalProps> = ({ residents, onClose }) => {
+export const DocumentRequestModal: React.FC<DocumentRequestModalProps> = ({ residents, onClose, onRequestAdded }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedResident, setSelectedResident] = useState<Resident | null>(null);
   const [docType, setDocType] = useState<'Clearance' | 'Indigency'>('Clearance');
@@ -28,23 +29,22 @@ export const DocumentRequestModal: React.FC<DocumentRequestModalProps> = ({ resi
     `${r.first_name} ${r.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
   ).slice(0, 5);
 
-  const handleGenerate = () => {
+  const handleSubmit = async () => {
     if (!selectedResident || !purpose) return;
 
     setIsGenerating(true);
     try {
-      const doc = generateDocument({
-        resident: selectedResident,
-        purpose,
+      await submitServiceRequest({
+        resident_id: selectedResident.id,
         type: docType,
-        officialName: 'Hon. John Doe',
-        officialPosition: 'Barangay Captain'
+        purpose,
       });
       
-      downloadDocument(doc, `Barangay_${docType}_${selectedResident.last_name}`);
+      onRequestAdded();
       onClose();
     } catch (error) {
-      console.error('PDF Generation failed');
+      console.error('Failed to submit request', error);
+      alert('Failed to add request to the queue.');
     } finally {
       setIsGenerating(false);
     }
@@ -142,11 +142,11 @@ export const DocumentRequestModal: React.FC<DocumentRequestModalProps> = ({ resi
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end">
           <button
             disabled={!selectedResident || !purpose || isGenerating}
-            onClick={handleGenerate}
+            onClick={handleSubmit}
             className="flex items-center gap-2 px-8 py-3 bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-bold rounded-xl shadow-lg shadow-cyan-100 transition-all active:scale-95"
           >
-            <Download className="w-4 h-4" />
-            <span>{isGenerating ? 'Generating...' : 'Generate & Download'}</span>
+            <PlusCircle className="w-4 h-4" />
+            <span>{isGenerating ? 'Adding to Queue...' : 'Add to Queue'}</span>
           </button>
         </div>
       </div>
