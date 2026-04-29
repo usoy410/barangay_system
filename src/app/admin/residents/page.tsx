@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { ResidentTable } from '@/components/residents/ResidentTable';
 import { ResidentSearch } from '@/components/residents/ResidentSearch';
 import { ResidentForm } from '@/components/residents/ResidentForm';
+import { PasswordConfirmModal } from '@/components/admin/PasswordConfirmModal';
 import { getResidents, createResident, updateResident, archiveResident } from '@/lib/residents';
 import type { Resident } from '@/types/database';
 import { Users, Info } from 'lucide-react';
@@ -19,22 +20,39 @@ export default function ResidentsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingResident, setEditingResident] = useState<Resident | null>(null);
 
+  const [page, setPage] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const PAGE_SIZE = 10;
+  
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState<(() => Promise<void>) | null>(null);
+
   // Fetch residents from Supabase
-  const fetchResidents = useCallback(async () => {
+  const fetchResidents = useCallback(async (currentPage: number, search: string) => {
     setIsLoading(true);
     try {
-      const { data } = await getResidents({ search: searchTerm });
+      const { data, count } = await getResidents({ 
+        search, 
+        limit: PAGE_SIZE, 
+        offset: currentPage * PAGE_SIZE 
+      });
       setResidents(data);
+      if (count !== null) setTotalCount(count);
     } catch (error) {
       console.error('Failed to load residents');
     } finally {
       setIsLoading(false);
     }
-  }, [searchTerm]);
+  }, []);
 
   useEffect(() => {
-    fetchResidents();
-  }, [fetchResidents]);
+    fetchResidents(page, searchTerm);
+  }, [fetchResidents, page, searchTerm]);
+
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    setPage(0);
+  };
 
   // Handlers
   const handleAddClick = () => {
@@ -48,19 +66,32 @@ export default function ResidentsPage() {
   };
 
   const handleFormSubmit = async (data: any) => {
-    if (editingResident) {
-      await updateResident(editingResident.id, data);
-    } else {
-      await createResident(data);
-    }
-    await fetchResidents();
+    setPendingAction(() => async () => {
+      if (editingResident) {
+        await updateResident(editingResident.id, data);
+      } else {
+        await createResident(data);
+      }
+      setIsFormOpen(false);
+      await fetchResidents(page, searchTerm);
+    });
+    setIsPasswordModalOpen(true);
   };
 
   const handleArchive = async (id: string) => {
-    if (confirm('Are you sure you want to archive this resident record?')) {
+    setPendingAction(() => async () => {
       await archiveResident(id);
-      await fetchResidents();
+      await fetchResidents(page, searchTerm);
+    });
+    setIsPasswordModalOpen(true);
+  };
+
+  const executePendingAction = async (password: string) => {
+    if (pendingAction) {
+      await pendingAction();
+      setPendingAction(null);
     }
+    setIsPasswordModalOpen(false);
   };
 
   return (
@@ -91,7 +122,7 @@ export default function ResidentsPage() {
 
         {/* Content Area */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-          <ResidentSearch onSearch={setSearchTerm} onAddClick={handleAddClick} />
+          <ResidentSearch onSearch={handleSearch} onAddClick={handleAddClick} />
           
           <ResidentTable 
             residents={residents} 
@@ -99,6 +130,30 @@ export default function ResidentsPage() {
             onEdit={handleEditClick}
             onArchive={handleArchive}
           />
+          
+          {totalCount > PAGE_SIZE && (
+            <div className="flex justify-between items-center mt-6 p-4 border-t border-slate-100">
+              <span className="text-sm text-slate-500 font-medium">
+                Showing {page * PAGE_SIZE + 1} to {Math.min((page + 1) * PAGE_SIZE, totalCount)} of {totalCount} residents
+              </span>
+              <div className="flex gap-2">
+                <button 
+                  disabled={page === 0}
+                  onClick={() => setPage(p => p - 1)}
+                  className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-semibold hover:bg-slate-50 disabled:opacity-50 transition-colors cursor-pointer"
+                >
+                  Previous
+                </button>
+                <button 
+                  disabled={(page + 1) * PAGE_SIZE >= totalCount}
+                  onClick={() => setPage(p => p + 1)}
+                  className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-semibold hover:bg-slate-50 disabled:opacity-50 transition-colors cursor-pointer"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 
@@ -111,6 +166,15 @@ export default function ResidentsPage() {
           onCancel={() => setIsFormOpen(false)}
         />
       )}
+
+      <PasswordConfirmModal 
+        isOpen={isPasswordModalOpen}
+        onConfirm={executePendingAction}
+        onCancel={() => {
+          setIsPasswordModalOpen(false);
+          setPendingAction(null);
+        }}
+      />
       
       <footer className="py-8 bg-slate-50 border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 text-center">

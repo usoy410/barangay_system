@@ -5,11 +5,13 @@ import { useRouter } from 'next/navigation';
 import { User, Home, ArrowLeft, Phone, Lock, MapPin, Calendar, Heart, Eye, EyeOff, Users, ClipboardList } from 'lucide-react';
 import Link from 'next/link';
 import { createResident } from '@/lib/residents';
+import { hashPassword } from '@/app/actions/auth';
 
 export default function RegisterPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     firstName: '',
     middleName: '',
@@ -26,8 +28,11 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
     
     try {
+      const hashedPassword = await hashPassword(formData.password);
+
       await createResident({
         first_name: formData.firstName,
         last_name: formData.lastName,
@@ -38,7 +43,7 @@ export default function RegisterPage() {
         occupation: formData.occupation,
         address: formData.address,
         mobile_number: formData.mobile,
-        password_hash: formData.password,
+        password_hash: hashedPassword,
         role: 'Resident',
         is_archived: false,
         household_id: null
@@ -46,9 +51,13 @@ export default function RegisterPage() {
 
       alert('Registration successful! Please login.');
       router.push('/login');
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert('Registration failed. Please check your details.');
+      if (err?.code === '23505' || err?.message?.includes('duplicate key')) {
+        setError('Registration failed: A user with this mobile number already exists.');
+      } else {
+        setError(err?.message || 'Registration failed. Please check your details.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -254,6 +263,11 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="pt-4">
+                  {error && (
+                    <div className="mb-4 bg-red-50 text-red-600 p-4 rounded-xl text-sm font-bold border border-red-100 animate-in fade-in slide-in-from-top-1">
+                      {error}
+                    </div>
+                  )}
                   <button 
                     type="submit" 
                     disabled={isLoading}

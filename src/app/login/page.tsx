@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Shield, User, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { setDemoSession, UserRole } from '@/lib/auth-demo';
+import { loginUser } from '@/app/actions/auth';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!password) {
@@ -25,37 +26,32 @@ export default function LoginPage() {
     setIsLoading(true);
     setError('');
     
-    // Simulating login logic
-    setTimeout(() => {
-      setIsLoading(false);
-      
+    try {
+      const user = await loginUser(mobile, password);
+
       let assignedRole: UserRole = 'resident';
       let redirectPath = '/';
 
-      // 1. Admin/Developer Check (Dedicated Mobile Number)
-      if (mobile === '09105651553' && password === 'dev123') {
-        assignedRole = 'developer';
+      if (user.role === 'Admin') {
+        assignedRole = 'developer'; // Mapping to the demo's highest role
         redirectPath = '/admin';
-      } 
-      // 2. Official Check (Example range or specific check)
-      else if (mobile.startsWith('0900')) {
+      } else if (user.role === 'Official') {
         assignedRole = 'official';
         redirectPath = '/admin';
-      }
-      // 3. Resident
-      else {
-        assignedRole = 'resident';
-        redirectPath = '/';
       }
 
       setDemoSession({
         role: assignedRole,
-        mobile: mobile,
-        name: mobile.slice(-4) // Use last 4 digits as a nickname
+        mobile: user.mobile_number,
+        name: user.first_name
       });
 
       router.push(redirectPath);
-    }, 1000);
+    } catch (err: any) {
+      setError(err.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
