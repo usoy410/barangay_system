@@ -6,6 +6,7 @@ import { submitServiceRequest } from '@/lib/requests';
 import { getResidentByMobile } from '@/lib/residents';
 import { getClientSession } from '@/lib/auth-demo';
 import { useRouter } from 'next/navigation';
+import { SuccessVideoModal } from '@/components/ui/SuccessVideoModal';
 
 export default function CitizenServices() {
   const router = useRouter();
@@ -148,28 +149,17 @@ export default function CitizenServices() {
             <h2 className="text-3xl font-black text-slate-900 mb-2 font-lexend">Request {selectedService}</h2>
             <p className="text-slate-500 mb-8 font-medium">Pakisuri ang iyong mga detalye para maproseso ang request.</p>
             
-            {submitted ? (
-              <div className="text-center py-10 space-y-6">
-                <div className="w-24 h-24 bg-emerald-50 text-emerald-500 rounded-[2rem] flex items-center justify-center mx-auto mb-4 shadow-inner">
-                  <CheckCircle className="w-12 h-12" />
-                </div>
-                <h3 className="text-3xl font-black text-slate-900">Request Submitted!</h3>
-                <div className="bg-slate-50 p-8 rounded-[2rem] border-2 border-dashed border-slate-200">
-                  <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mb-2">Tracking Number</p>
-                  <p className="text-4xl font-black text-sky-700 tracking-tighter uppercase">{trackingId}</p>
-                </div>
-                <p className="text-slate-500 font-medium px-4 leading-relaxed">
-                  Pinoproseso na ang iyong request. Maaari mong subaybayan ang status nito sa iyong <span className="text-sky-600 font-bold cursor-pointer" onClick={() => router.push('/account')}>account dashboard</span>.
-                </p>
-                <button 
-                  onClick={() => router.push('/account')}
-                  className="w-full bg-slate-900 text-white font-black py-4 rounded-2xl hover:bg-slate-800 transition-all"
-                >
-                  Go to Dashboard
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleRequest} className="space-y-6">
+            <SuccessVideoModal 
+              isOpen={submitted} 
+              onClose={() => {
+                setSubmitted(false);
+                router.push('/account');
+              }}
+              title="Request Submitted!"
+              message={`Ang iyong request para sa ${selectedService} ay natanggap na. Tracking ID: ${trackingId}. Pakisubaybayan ang status nito sa iyong dashboard.`}
+            />
+
+            <form onSubmit={handleRequest} className="space-y-6">
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 flex items-center justify-between">
                   <div>
                     <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest leading-none mb-1">Applying for</p>
@@ -207,7 +197,6 @@ export default function CitizenServices() {
                   {isSubmitting ? 'Sending Request...' : 'Submit Request'}
                 </button>
               </form>
-            )}
           </div>
         )}
       </main>

@@ -19,8 +19,8 @@ const atkinson = Atkinson_Hyperlegible({
 });
 
 export const metadata: Metadata = {
-  title: "Barangay Information System | Digital Governance",
-  description: "A comprehensive digital solution for efficient Barangay management, resident records, and community services.",
+  title: "Konektado | Digital Governance",
+  description: "Konektado Kita - A comprehensive digital solution for efficient community management, resident records, and community services.",
 };
 
 export default function RootLayout({

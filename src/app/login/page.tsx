@@ -2,10 +2,12 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Shield, User, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import Image from 'next/image';
+import { User, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { setDemoSession, UserRole } from '@/lib/auth-demo';
 import { loginUser } from '@/app/actions/auth';
+import { DecorativeLeaves } from '@/components/ui/DecorativeLeaves';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -17,7 +19,7 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!password) {
       setError('Password is required to proceed.');
       return;
@@ -25,7 +27,7 @@ export default function LoginPage() {
 
     setIsLoading(true);
     setError('');
-    
+
     try {
       const user = await loginUser(mobile, password);
 
@@ -55,15 +57,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center font-atkinson px-6 py-12">
-      <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
-        
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center font-atkinson px-6 py-12 relative overflow-hidden">
+      <DecorativeLeaves />
+      <div className="max-w-md w-full bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden relative z-10">
+
         <div className="bg-slate-900 p-10 text-white text-center">
-          <div className="w-16 h-16 bg-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-900/20">
-            <Shield className="w-8 h-8" />
+          <div className="relative w-24 h-24 mx-auto mb-6">
+            <Image
+              src="/images/barangay-hall.png"
+              alt="Barangay Hall"
+              fill
+              sizes="96px"
+              className="object-contain drop-shadow-2xl"
+            />
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">BIS Portal</h1>
-          <p className="text-slate-400 mt-2 font-medium">Digital na Pamamahala ng Barangay</p>
+          <h1 className="text-3xl font-bold tracking-tight text-white">Konektado Kita</h1>
         </div>
 
         <div className="p-8 md:p-10">
@@ -72,13 +80,13 @@ export default function LoginPage() {
               <label className="block text-slate-700 font-bold mb-2 text-lg">Mobile Number</label>
               <div className="relative">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                <input 
-                  required 
-                  type="text" 
+                <input
+                  required
+                  type="text"
                   value={mobile}
                   onChange={(e) => setMobile(e.target.value)}
-                  className="w-full border-2 border-slate-200 bg-slate-50 pl-12 pr-4 py-4 rounded-xl text-lg text-slate-900 focus:border-cyan-500 focus:bg-white focus:outline-none transition-all" 
-                  placeholder="Enter your 11-digit mobile" 
+                  className="w-full border-2 border-slate-200 bg-slate-50 pl-12 pr-4 py-4 rounded-xl text-lg text-slate-900 focus:border-cyan-500 focus:bg-white focus:outline-none transition-all"
+                  placeholder="Enter your 11-digit mobile"
                 />
               </div>
             </div>
@@ -87,13 +95,13 @@ export default function LoginPage() {
               <label className="block text-slate-700 font-bold mb-2 text-lg">Password</label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                <input 
-                  required 
-                  type={showPassword ? 'text' : 'password'} 
+                <input
+                  required
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full border-2 border-slate-200 bg-slate-50 pl-12 pr-12 py-4 rounded-xl text-lg text-slate-900 focus:border-cyan-500 focus:bg-white focus:outline-none transition-all" 
-                  placeholder="••••••••" 
+                  className="w-full border-2 border-slate-200 bg-slate-50 pl-12 pr-12 py-4 rounded-xl text-lg text-slate-900 focus:border-cyan-500 focus:bg-white focus:outline-none transition-all"
+                  placeholder="••••••••"
                 />
                 <button
                   type="button"
@@ -111,8 +119,8 @@ export default function LoginPage() {
               </div>
             )}
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={isLoading}
               className="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl text-xl hover:bg-slate-800 transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50"
             >

@@ -1,6 +1,6 @@
 # Document Generation & Service Flow: Study Guide
 
-Welcome to the deep-dive interactive guide for **Document Services** in the Barangay Management System. This guide leverages the LinkMarkdown format to explain exactly how citizens request documents, how templates are managed, and the precise logic behind injecting data into official files.
+Welcome to the deep-dive interactive guide for **Document Services** in **Konektado**. This guide leverages the LinkMarkdown format to explain exactly how citizens request documents, how templates are managed, and the precise logic behind injecting data into official files.
 
 ## 1. The Service Request Pipeline
 

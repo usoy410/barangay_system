@@ -5,6 +5,7 @@ import { AlertTriangle, Camera, MapPin, X, ImageIcon } from 'lucide-react';
 import { reportIncident } from '@/lib/incidents';
 import { getClientSession } from '@/lib/auth-demo';
 import { uploadIncidentPhoto } from '@/lib/storage';
+import { SuccessVideoModal } from '@/components/ui/SuccessVideoModal';
 
 export default function CitizenIncidents() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -74,10 +75,6 @@ export default function CitizenIncidents() {
       setLocation('');
       setDescription('');
       removeFile();
-
-      setTimeout(() => {
-        setSubmitted(false);
-      }, 5000);
     } catch (error) {
       console.error('Failed to report incident:', error);
       alert('Failed to send report. Please try again or call emergency services.');
@@ -97,12 +94,14 @@ export default function CitizenIncidents() {
 
       <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-8">
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm">
-          {submitted ? (
-            <div className="bg-green-100 border-2 border-green-500 text-green-900 p-6 rounded-xl text-center font-bold text-lg">
-              Matagumpay na naipadala ang ulat! Naabisuhan na ang mga awtoridad at sinusuri na ang sitwasyon.
-            </div>
-          ) : (
-            <>
+          <SuccessVideoModal 
+            isOpen={submitted} 
+            onClose={() => setSubmitted(false)}
+            title="Report Submitted!"
+            message="Matagumpay na naipadala ang iyong ulat. Naabisuhan na ang mga awtoridad at sinusuri na ang sitwasyon."
+          />
+          
+          <>
               <p className="text-slate-600 mb-6 font-medium text-lg">
                 Mangyaring ibigay ang mga detalye tungkol sa insidente. <strong>Sa matitinding emergency, mangyaring tumawag nang direkta sa 911.</strong>
               </p>
@@ -199,7 +198,6 @@ export default function CitizenIncidents() {
                 </button>
               </form>
             </>
-          )}
         </div>
       </main>
     </div>

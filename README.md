@@ -1,10 +1,10 @@
-# 🏘️ Barangay Management System
+# 🏘️ Konektado
 
-A comprehensive, real-time digital platform designed to modernize and streamline local government operations at the barangay level. This system bridges the gap between residents and barangay officials through automated workflows and centralized data management.
+**Konektado Kita** — A comprehensive, real-time digital platform designed to modernize and streamline local government operations. This system bridges the gap between residents and officials through automated workflows and centralized data management.
 
 ## 📌 What is this system for?
 
-The **Barangay Management System** is a digital solution tailored for local communities in the Philippines. It serves as a unified hub for resident records, incident reporting, and public service requests. By transitioning from traditional paper-based methods to a robust web-based architecture, the system ensures data integrity, faster service delivery, and improved community engagement.
+**Konektado** is a digital solution tailored for local communities. It serves as a unified hub for resident records, incident reporting, and public service requests. By transitioning from traditional paper-based methods to a robust web-based architecture, the system ensures data integrity, faster service delivery, and improved community engagement.
 
 ## ⚠️ The Problem
 
@@ -24,8 +24,8 @@ This system addresses these challenges by providing:
 
 ## 👥 Target Users
 
-1.  **Barangay Officials & Staff (Admins)**: Manage resident records, process document requests, monitor incidents, and view community health/security dashboards.
-2.  **Barangay Residents**: Access personalized accounts to request services, track status, and report community-related incidents without visiting the barangay hall.
+1.  **Officials & Staff (Admins)**: Manage resident records, process document requests, monitor incidents, and view community health/security dashboards.
+2.  **Residents**: Access personalized accounts to request services, track status, and report community-related incidents through the **Konektado** portal.
 
 ## 🚀 Core Features
 

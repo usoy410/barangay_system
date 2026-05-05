@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { FileText, X, AlertCircle, Search, PlusCircle } from 'lucide-react';
 import { submitServiceRequest } from '@/lib/requests';
 import type { Resident } from '@/types/database';
+import { SuccessVideoModal } from '../ui/SuccessVideoModal';
 
 interface DocumentRequestModalProps {
   residents: Resident[];
@@ -24,6 +25,7 @@ export const DocumentRequestModal: React.FC<DocumentRequestModalProps> = ({ resi
   const [docType, setDocType] = useState<'Clearance' | 'Indigency'>('Clearance');
   const [purpose, setPurpose] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const filteredResidents = residents.filter(r => 
     `${r.first_name} ${r.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
@@ -41,7 +43,7 @@ export const DocumentRequestModal: React.FC<DocumentRequestModalProps> = ({ resi
       });
       
       onRequestAdded();
-      onClose();
+      setShowSuccess(true);
     } catch (error) {
       console.error('Failed to submit request', error);
       alert('Failed to add request to the queue.');
@@ -52,6 +54,12 @@ export const DocumentRequestModal: React.FC<DocumentRequestModalProps> = ({ resi
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+      <SuccessVideoModal 
+        isOpen={showSuccess} 
+        onClose={onClose}
+        title="Document Queued!"
+        message={`${docType} request for ${selectedResident?.first_name} has been added to the processing queue.`}
+      />
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
           <h2 className="text-xl font-bold text-slate-900">Issue Document</h2>

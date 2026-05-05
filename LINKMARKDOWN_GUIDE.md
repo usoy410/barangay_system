@@ -1,6 +1,6 @@
-# Barangay Management System: Codebase Study Guide
+# Konektado: Codebase Study Guide
 
-Welcome to the **Barangay Management System** interactive documentation! This guide leverages our "LinkMarkdown" structure to help you understand how the system is architected, bridging the gap between high-level concepts and exact code implementations.
+Welcome to the **Konektado** interactive documentation! This guide leverages our "LinkMarkdown" structure to help you understand how the system is architected, bridging the gap between high-level concepts and exact code implementations.
 
 Instead of hunting through folders or blindly prompting for answers, you can follow this narrative.
 
@@ -101,7 +101,7 @@ A crucial feature of this system is the **Audit Logging System**. To maintain ac
 
 ## Summary
 
-By exploring the specific snippets linked above, you can confidently navigate the **Barangay System**. You've now seen exactly how:
+By exploring the specific snippets linked above, you can confidently navigate **Konektado**. You've now seen exactly how:
 1. The database client connects.
 2. The schema enforces security and audit logging.
 3. Resident profiles are searched and safely archived.

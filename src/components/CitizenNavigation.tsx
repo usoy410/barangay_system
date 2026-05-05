@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, FileText, AlertTriangle, User, Landmark } from 'lucide-react';
+import Image from 'next/image';
+import { Home, FileText, AlertTriangle, User } from 'lucide-react';
 import { getClientSession } from '@/lib/auth-demo';
 
 export default function CitizenNavigation() {
@@ -52,11 +53,17 @@ export default function CitizenNavigation() {
           ? `${activeThemeClass}/95 backdrop-blur-md shadow-lg border-b border-white/10` 
           : 'bg-slate-900/10 backdrop-blur-md'
       }`}>
-        <Link href="/" className="flex items-center gap-2 group cursor-pointer">
-          <div className="bg-white/10 p-2 rounded-xl text-white group-hover:bg-white/20 transition-colors border border-white/10">
-            <Landmark className="w-6 h-6" />
+        <Link href="/" className="flex items-center gap-3 group cursor-pointer">
+          <div className="relative w-10 h-10 transition-all duration-300">
+            <Image 
+              src="/images/barangay-hall.png" 
+              alt="Barangay Hall" 
+              fill 
+              sizes="40px"
+              className="object-contain transform group-hover:scale-110 transition-transform duration-500 drop-shadow-md group-hover:drop-shadow-lg"
+            />
           </div>
-          <span className="text-xl font-black text-white tracking-tighter uppercase">Barangay BIS</span>
+          <span className="text-xl font-black text-white tracking-tighter uppercase">Konektado</span>
         </Link>
 
         <nav className="flex items-center gap-1">

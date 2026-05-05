@@ -101,7 +101,7 @@ export const TemplateManager: React.FC = () => {
       <div className="bg-slate-900 p-8 text-white flex items-center justify-between">
         <div>
           <h3 className="text-xl font-black tracking-tight">Template Settings</h3>
-          <p className="text-slate-400 text-sm font-medium mt-1">Manage official barangay document templates.</p>
+          <p className="text-slate-400 text-sm font-medium mt-1">Manage official community document templates.</p>
         </div>
         <FileText className="w-10 h-10 text-slate-700" />
       </div>
@@ -141,14 +141,14 @@ export const TemplateManager: React.FC = () => {
             <TagItem tag="{day}" label="Day (e.g. 18th)" />
             <TagItem tag="{month}" label="Full Month" />
             <TagItem tag="{year}" label="Full Year" />
-            <TagItem tag="{barangay}" label="Barangay Name" />
+            <TagItem tag="{barangay}" label="Community/Barangay" />
           </div>
         </div>
 
         {/* 2. CURRENT STATUS */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
           <StatusCard 
-            label="Barangay Clearance" 
+            label="Official Clearance" 
             isActive={statuses.Clearance} 
             filename="Clearance_Template.docx" 
             onDelete={() => handleDelete('Clearance')}

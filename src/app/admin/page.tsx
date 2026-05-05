@@ -94,7 +94,7 @@ export default function Dashboard() {
         </div>
 
         <div className="bg-white rounded-[2.5rem] p-12 border border-slate-200 shadow-sm text-center">
-          <h2 className="text-2xl font-black text-slate-900 mb-4">Barangay Overview Ready</h2>
+          <h2 className="text-2xl font-black text-slate-900 mb-4">Konektado Overview Ready</h2>
           <p className="text-slate-500 max-w-xl mx-auto font-medium">
             All systems are operational. You can manage templates, handle resident requests, and track incidents 
             using the navigation menu above.
@@ -103,7 +103,7 @@ export default function Dashboard() {
       </main>
 
       <footer className="py-10 text-center text-slate-400 text-sm">
-        &copy; 2026 Barangay Information System. Developed with precision & care.
+        &copy; 2026 Konektado. Developed with precision & care.
       </footer>
     </React.Fragment>
   );

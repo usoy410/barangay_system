@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Home, Users, FileText, AlertTriangle, Menu, X, LogOut } from 'lucide-react';
 import { clearDemoSession } from '@/lib/auth-demo';
 import { useRouter, usePathname } from 'next/navigation';
@@ -28,11 +29,17 @@ export const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center gap-8">
-            <Link href="/admin" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 bg-cyan-600 rounded-lg flex items-center justify-center text-white font-bold group-hover:bg-cyan-700 transition-colors shadow-sm">
-                B
+            <Link href="/admin" className="flex items-center gap-3 group">
+              <div className="relative w-10 h-10 transition-all duration-300">
+                <Image 
+                  src="/images/barangay-hall.png" 
+                  alt="Barangay Hall" 
+                  fill 
+                  sizes="40px"
+                  className="object-contain transform group-hover:scale-110 transition-transform duration-500 drop-shadow-sm group-hover:drop-shadow-md"
+                />
               </div>
-              <span className="font-lexend font-bold text-slate-900 tracking-tight">BIS Admin</span>
+              <span className="font-lexend font-bold text-slate-900 tracking-tight">Konektado Admin</span>
             </Link>
             
             <div className="hidden md:flex items-center gap-1">
