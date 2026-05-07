@@ -131,3 +131,24 @@ export async function getResidentByMobile(mobile: string) {
 
   return data as Resident;
 }
+
+/**
+ * Fetches residents with administrative or official roles.
+ * 
+ * @returns A promise resolving to an array of officials.
+ */
+export async function getOfficials() {
+  const { data, error } = await supabase
+    .from('residents')
+    .select('*')
+    .in('role', ['Official', 'Admin'])
+    .eq('is_archived', false)
+    .order('last_name', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching officials:', error);
+    throw error;
+  }
+
+  return data as Resident[];
+}

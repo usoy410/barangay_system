@@ -6,12 +6,31 @@ import { LogOut, ArrowRight, FileText, AlertTriangle, Bell } from 'lucide-react'
 import { clearDemoSession } from '@/lib/auth-demo';
 import { useRouter } from 'next/navigation';
 import { DecorativeLeaves } from '@/components/ui/DecorativeLeaves';
+import { OfficialDirectory } from '@/components/services/OfficialDirectory';
+import { getOfficials } from '@/lib/residents';
+import { Resident } from '@/types/database';
 
 export default function CitizenHome() {
   const router = useRouter();
+  const [officials, setOfficials] = React.useState<Resident[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function loadOfficials() {
+      try {
+        const data = await getOfficials();
+        setOfficials(data);
+      } catch (error) {
+        console.error('Failed to load officials:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadOfficials();
+  }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-atkinson relative overflow-hidden">
+    <div className="flex flex-col font-atkinson relative overflow-hidden">
       {/* Mobile-first Header */}
       <header className="bg-slate-900 text-white pt-12 pb-8 md:pt-32 md:pb-12 px-6 rounded-b-[2rem] shadow-md relative overflow-hidden">
         <DecorativeLeaves variant="dark" />
@@ -66,6 +85,15 @@ export default function CitizenHome() {
             </Link>
 
           </div>
+        </section>
+
+        {/* Barangay Directory Section */}
+        <section className="pb-12">
+          {loading ? (
+            <div className="h-40 bg-slate-100 animate-pulse rounded-2xl" />
+          ) : (
+            <OfficialDirectory officials={officials} />
+          )}
         </section>
       </main>
     </div>

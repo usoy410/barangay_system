@@ -6,13 +6,10 @@ export default function ResidentLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-slate-50">
       <CitizenNavigation />
       
-      {/* 
-        Padding Bottom (pb-24) for Mobile to account for fixed bottom nav
-      */}
-      <div className="flex-grow pb-24 md:pb-0">
+      <div className="flex-grow pb-[calc(5rem+env(safe-area-inset-bottom,0px))] md:pb-0">
         {children}
       </div>
     </div>

@@ -32,6 +32,7 @@ This system addresses these challenges by providing:
 -   **Resident Management**: Complete CRUD operations for resident profiles with advanced filtering and search.
 -   **Incident Reporting & Feed**: Residents can submit reports with titles and descriptions; Admins can track resolution status in real-time.
 -   **Service Request Queue**: Management system for document requests (Clearance, Indigency, etc.) with automated status updates.
+-   **Barangay Directory & Contact**: Direct access to official contact numbers with pre-defined Tagalog communication templates for professional inquiries.
 -   **Template Management**: Admin controls for document templates, allowing for customizable output formats.
 -   **Document Preview & Export**: Generation of documents in `.docx` and `.pdf` formats using professional-grade templating.
 -   **Real-time Dashboard**: Overview of total residents, pending requests, and active incidents.
