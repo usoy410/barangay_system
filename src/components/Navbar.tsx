@@ -36,7 +36,7 @@ export const Navbar: React.FC = () => {
                   alt="Barangay Hall" 
                   fill 
                   sizes="40px"
-                  className="object-contain transform group-hover:scale-110 transition-transform duration-500 drop-shadow-sm group-hover:drop-shadow-md"
+                  className="object-contain transform group-hover:scale-110 transition-transform duration-200 ease-out drop-shadow-sm group-hover:drop-shadow-md"
                 />
               </div>
               <span className="font-lexend font-bold text-slate-900 tracking-tight">Konektado Admin</span>
@@ -59,7 +59,7 @@ export const Navbar: React.FC = () => {
             {/* Mobile menu button */}
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 text-slate-500 hover:bg-slate-50 rounded-xl md:hidden transition-colors"
+              className="p-2 text-slate-500 hover:bg-slate-50 rounded-xl md:hidden transition-colors duration-200 ease-out"
             >
               <Menu className={`w-6 h-6 transition-transform ${isMenuOpen ? 'rotate-90' : ''}`} />
             </button>
@@ -69,7 +69,7 @@ export const Navbar: React.FC = () => {
             <div className="flex items-center gap-3">
               <button 
                 onClick={handleSignOut}
-                className="hidden sm:inline-flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all cursor-pointer"
+                className="hidden sm:inline-flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all duration-150 ease-out active:scale-[0.97] cursor-pointer"
               >
                 Sign Out
               </button>
@@ -91,12 +91,12 @@ export const Navbar: React.FC = () => {
           />
           
           {/* Menu Content */}
-          <div className="absolute top-20 left-4 right-4 bg-white rounded-[2.5rem] p-8 shadow-2xl border border-slate-100 animate-in slide-in-from-top-4 duration-300">
+          <div className="absolute top-20 left-4 right-4 bg-white rounded-[2.5rem] p-8 shadow-2xl border border-slate-100 animate-in slide-in-from-top-4 opacity-0 duration-200 ease-out fill-mode-forwards">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Menu Navigation</h2>
               <button 
                 onClick={() => setIsMenuOpen(false)}
-                className="p-2 bg-slate-50 rounded-full text-slate-400 hover:text-slate-900 transition-colors"
+                className="p-2 bg-slate-50 rounded-full text-slate-400 hover:text-slate-900 transition-colors duration-200 ease-out"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -108,7 +108,7 @@ export const Navbar: React.FC = () => {
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`flex items-center gap-4 p-5 rounded-2xl text-lg font-bold transition-all ${
+                  className={`flex items-center gap-4 p-5 rounded-2xl text-lg font-bold transition-all duration-150 ease-out active:scale-[0.97] ${
                     pathname === link.href 
                       ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-200 scale-[1.02]' 
                       : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
@@ -125,7 +125,7 @@ export const Navbar: React.FC = () => {
               
               <button 
                 onClick={handleSignOut}
-                className="w-full flex items-center justify-center gap-3 p-5 rounded-2xl text-lg font-black text-red-500 bg-red-50 hover:bg-red-100 transition-all active:scale-95"
+                className="w-full flex items-center justify-center gap-3 p-5 rounded-2xl text-lg font-black text-red-500 bg-red-50 hover:bg-red-100 transition-transform duration-150 ease-out active:scale-[0.97]"
               >
                 <LogOut className="w-5 h-5" />
                 Sign Out of Admin
@@ -141,7 +141,7 @@ export const Navbar: React.FC = () => {
 const NavLink = ({ href, icon, label, active = false }: { href: string; icon: React.ReactNode; label: string; active?: boolean }) => (
   <Link 
     href={href}
-    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ease-out active:scale-[0.97] ${
       active 
         ? 'text-cyan-700 bg-cyan-50' 
         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'

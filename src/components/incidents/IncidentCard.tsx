@@ -21,7 +21,7 @@ export const IncidentCard: React.FC<IncidentCardProps> = ({
   onViewImage,
 }) => {
   return (
-    <div className="bg-white border border-slate-200 rounded-3xl p-6 hover:shadow-xl transition-all duration-300 group">
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 hover:shadow-xl transition-all duration-200 ease-out group">
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
         <div className="flex-grow">
           <div className="flex items-center gap-2 mb-2">
@@ -30,7 +30,7 @@ export const IncidentCard: React.FC<IncidentCardProps> = ({
               {new Date(incident.created_at).toLocaleDateString()}
             </span>
           </div>
-          <h3 className="text-lg font-bold text-slate-900 group-hover:text-cyan-700 transition-colors mb-2">
+          <h3 className="text-lg font-bold text-slate-900 group-hover:text-cyan-700 transition-colors duration-200 ease-out mb-2">
             {incident.title}
           </h3>
           <p className="text-slate-600 text-sm leading-relaxed mb-4">
@@ -52,10 +52,10 @@ export const IncidentCard: React.FC<IncidentCardProps> = ({
               <img 
                 src={incident.image_url} 
                 alt="Incident Report" 
-                className="w-full h-48 object-cover group-hover/img:scale-105 transition-transform duration-500" 
+                className="w-full h-48 object-cover group-hover/img:scale-105 transition-transform duration-200 ease-out" 
               />
               <div className="absolute inset-0 bg-slate-900/0 group-hover/img:bg-slate-900/10 transition-colors flex items-center justify-center">
-                <div className="bg-white/90 p-2 rounded-full opacity-0 group-hover/img:opacity-100 transition-all transform translate-y-2 group-hover/img:translate-y-0 shadow-lg text-slate-900">
+                <div className="bg-white/90 p-2 rounded-full opacity-0 group-hover/img:opacity-100 transition-all duration-200 ease-out transform translate-y-2 group-hover/img:translate-y-0 shadow-lg text-slate-900">
                   <Maximize2 className="w-4 h-4" />
                 </div>
               </div>
@@ -82,7 +82,7 @@ export const IncidentCard: React.FC<IncidentCardProps> = ({
                 key={s}
                 onClick={() => !isActive && onStatusUpdate(incident.id, s as any)}
                 className={`
-                  px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-200
+                  px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-150 ease-out active:scale-[0.97]
                   ${isActive 
                     ? 'bg-slate-900 text-white shadow-lg shadow-slate-200' 
                     : 'bg-slate-50 text-slate-400 hover:bg-white hover:text-cyan-600 hover:shadow-md cursor-pointer border border-transparent hover:border-slate-100'

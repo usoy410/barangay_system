@@ -108,7 +108,7 @@ export const TemplateManager: React.FC = () => {
 
       <div className="p-8">
         {/* 1. TAG GUIDE (Expandable) */}
-        <div className={`mb-10 pb-8 border-b border-slate-100 transition-all duration-500 overflow-hidden ${isGuideExpanded ? 'max-h-[2000px]' : 'max-h-[140px]'}`}>
+        <div className={`mb-10 pb-8 border-b border-slate-100 transition-all duration-300 ease-out overflow-hidden ${isGuideExpanded ? 'max-h-[2000px]' : 'max-h-[140px]'}`}>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Info className="w-5 h-5 text-cyan-600" />
@@ -116,7 +116,7 @@ export const TemplateManager: React.FC = () => {
             </div>
             <button 
               onClick={() => setIsGuideExpanded(!isGuideExpanded)}
-              className="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full text-[10px] font-black uppercase tracking-widest transition-colors cursor-pointer"
+              className="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-150 ease-out active:scale-[0.97] cursor-pointer"
             >
               {isGuideExpanded ? 'Minimize Guide' : 'Expand Full Guide'}
             </button>
@@ -162,7 +162,7 @@ export const TemplateManager: React.FC = () => {
         </div>
 
         {/* 3. UPLOAD AREA */}
-        <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl p-10 text-center relative group hover:border-cyan-500 transition-all">
+        <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl p-10 text-center relative group hover:border-cyan-500 transition-colors duration-200 ease-out">
           <input 
             type="file" 
             accept=".docx" 
@@ -172,11 +172,11 @@ export const TemplateManager: React.FC = () => {
           />
           
           <div className="space-y-4">
-            <div className="w-20 h-20 bg-white shadow-xl rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+            <div className="w-20 h-20 bg-white shadow-xl rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-200 ease-out">
               {isUploading ? (
                 <Loader2 className="w-10 h-10 text-cyan-500 animate-spin" />
               ) : (
-                <Upload className="w-10 h-10 text-slate-400 group-hover:text-cyan-600 transition-colors" />
+                <Upload className="w-10 h-10 text-slate-400 group-hover:text-cyan-600 transition-colors duration-200 ease-out" />
               )}
             </div>
             <div>

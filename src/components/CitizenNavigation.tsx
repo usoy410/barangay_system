@@ -57,7 +57,7 @@ export default function CitizenNavigation() {
   return (
     <>
       {/* Desktop Header (Hidden on Mobile) */}
-      <header className={`hidden md:flex fixed top-0 left-0 right-0 h-20 z-50 items-center px-12 justify-between transition-all duration-300 ${isScrolled
+      <header className={`hidden md:flex fixed top-0 left-0 right-0 h-20 z-50 items-center px-12 justify-between transition-all duration-200 ease-out ${isScrolled
           ? `${activeThemeClass} shadow-lg border-b border-white/10`
           : 'bg-transparent'
         }`}>
@@ -68,7 +68,7 @@ export default function CitizenNavigation() {
               alt="Barangay Hall"
               fill
               sizes="40px"
-              className="object-contain transform group-hover:scale-110 transition-transform duration-500 drop-shadow-md group-hover:drop-shadow-lg"
+              className="object-contain transform group-hover:scale-110 transition-transform duration-200 ease-out drop-shadow-md group-hover:drop-shadow-lg"
             />
           </div>
           <span className="text-xl font-black text-white tracking-tighter uppercase">Konektado</span>
@@ -79,7 +79,7 @@ export default function CitizenNavigation() {
             <Link
               key={link.href}
               href={link.href}
-              className={`px-6 py-2 rounded-xl font-bold flex items-center gap-2 transition-all cursor-pointer ${pathname === link.href
+              className={`px-6 py-2 rounded-xl font-bold flex items-center gap-2 transition-all duration-200 ease-out active:scale-[0.97] cursor-pointer ${pathname === link.href
                   ? 'bg-white/10 text-white shadow-sm ring-1 ring-white/20'
                   : 'text-white/70 hover:text-white hover:bg-white/5'
                 }`}
@@ -114,13 +114,13 @@ export default function CitizenNavigation() {
 const MobileNavItem = ({ href, icon, label, active }: { href: string; icon: React.ReactNode; label: string; active: boolean }) => (
   <Link
     href={href}
-    className={`flex flex-col items-center justify-center w-full min-w-[44px] cursor-pointer transition-all duration-300 relative ${active ? 'text-sky-700' : 'text-slate-400 hover:text-slate-600'
+    className={`flex flex-col items-center justify-center w-full min-w-[44px] cursor-pointer transition-all duration-200 ease-out active:scale-[0.97] relative ${active ? 'text-sky-700' : 'text-slate-400 hover:text-slate-600'
       }`}
   >
     {active && (
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-sky-600 rounded-b-full shadow-[0_1px_4px_rgba(3,105,161,0.4)]" />
     )}
-    <div className={`p-2 rounded-xl mb-0.5 transition-all duration-300 ${active ? 'bg-sky-50 scale-110' : 'group-hover:scale-105'}`}>
+    <div className={`p-2 rounded-xl mb-0.5 transition-all duration-200 ease-out ${active ? 'bg-sky-50 scale-110' : 'group-hover:scale-105'}`}>
       {React.cloneElement(icon as React.ReactElement<any>, {
         className: cn('w-6 h-6 transition-all', active ? 'stroke-[2.5px]' : 'stroke-[2px]')
       })}
