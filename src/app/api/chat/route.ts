@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Use the latest flash model for fast conversational responses
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     // Map frontend history to Gemini API format
     const chatHistory = history?.map((msg: any) => ({

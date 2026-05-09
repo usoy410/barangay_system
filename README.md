@@ -64,7 +64,7 @@ This system addresses these challenges by providing:
 
 ### **AI Integration**
 
-- **Google Generative AI SDK**: Integrated the Gemini 1.5 Flash model for fast, conversational support via an embedded Chatbot UI.
+- **Google Generative AI SDK**: Integrated the Gemini 2.5 Flash model for fast, conversational support via an embedded Chatbot UI.
 
 ### **Document Generation**
 
