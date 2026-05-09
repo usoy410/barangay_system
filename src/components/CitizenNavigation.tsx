@@ -21,15 +21,8 @@ export default function CitizenNavigation() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Theme color mapping for desktop header
-  const themeColors: Record<string, string> = {
-    '/': 'bg-slate-900',
-    '/services': 'bg-sky-700',
-    '/incidents': 'bg-red-700',
-    '/account': 'bg-slate-900',
-  };
-
-  const activeThemeClass = themeColors[pathname] || 'bg-slate-900';
+  // Theme color mapping for desktop header - unified to match BotHeader
+  const activeThemeClass = 'bg-slate-900';
 
   useEffect(() => {
     const session = getClientSession();
@@ -58,8 +51,8 @@ export default function CitizenNavigation() {
     <>
       {/* Desktop Header (Hidden on Mobile) */}
       <header className={`hidden md:flex fixed top-0 left-0 right-0 h-20 z-50 items-center px-12 justify-between transition-all duration-200 ease-out ${isScrolled
-          ? `${activeThemeClass} shadow-lg border-b border-white/10`
-          : 'bg-transparent'
+        ? `${activeThemeClass} shadow-lg border-b border-white/10`
+        : 'bg-transparent'
         }`}>
         <Link href="/" className="flex items-center gap-3 group cursor-pointer">
           <div className="relative w-10 h-10 transition-all duration-300">
@@ -80,8 +73,8 @@ export default function CitizenNavigation() {
               key={link.href}
               href={link.href}
               className={`px-6 py-2 rounded-xl font-bold flex items-center gap-2 transition-all duration-200 ease-out active:scale-[0.97] cursor-pointer ${pathname === link.href
-                  ? 'bg-white/10 text-white shadow-sm ring-1 ring-white/20'
-                  : 'text-white/70 hover:text-white hover:bg-white/5'
+                ? 'bg-white/10 text-white shadow-sm ring-1 ring-white/20'
+                : 'text-white/70 hover:text-white hover:bg-white/5'
                 }`}
             >
               {link.icon}

@@ -72,7 +72,7 @@ export const ResidentForm: React.FC<ResidentFormProps> = ({
         <form onSubmit={handleSubmit} className="px-6 py-6 max-h-[80vh] overflow-y-auto">
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl flex items-start gap-3 text-red-800 text-sm">
-              <AlertCircle className="w-5 h-5 flex-shrink-0" />
+              <AlertCircle className="w-5 h-5 shrink-0" />
               <span>{error}</span>
             </div>
           )}

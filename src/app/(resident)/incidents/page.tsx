@@ -6,6 +6,7 @@ import { reportIncident } from '@/lib/incidents';
 import { getClientSession } from '@/lib/auth-demo';
 import { uploadIncidentPhoto } from '@/lib/storage';
 import { SuccessVideoModal } from '@/components/ui/SuccessVideoModal';
+import { BotHeader } from '@/components/ui/BotHeader';
 
 export default function CitizenIncidents() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -84,13 +85,11 @@ export default function CitizenIncidents() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-atkinson">
-      <header className="bg-red-700 text-white pt-12 pb-8 md:pt-32 md:pb-12 px-6 rounded-b-[2rem] shadow-md">
-        <div className="flex items-center gap-3 mb-2">
-          <AlertTriangle className="w-8 h-8 opacity-80" />
-          <h1 className="text-3xl font-bold">Report Incident</h1>
-        </div>
-        <p className="text-red-100 text-lg">Magpadala ng alerto nang direkta sa command center ng Barangay.</p>
-      </header>
+      <BotHeader 
+        title="May Ire-report Ka Ba?"
+        message="Nandito ako para tulungan kang magpadala ng alerto sa command center."
+        animationType="standby"
+      />
 
       <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-8">
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm">

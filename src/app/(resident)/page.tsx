@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { LogOut, ArrowRight, FileText, AlertTriangle, Bell } from 'lucide-react';
 import { clearDemoSession } from '@/lib/auth-demo';
 import { useRouter } from 'next/navigation';
-import { DecorativeLeaves } from '@/components/ui/DecorativeLeaves';
+import { BotHeader } from '@/components/ui/BotHeader';
 import { OfficialDirectory } from '@/components/services/OfficialDirectory';
 import { getOfficials } from '@/lib/residents';
 import { Resident } from '@/types/database';
@@ -32,11 +32,10 @@ export default function CitizenHome() {
   return (
     <div className="flex flex-col font-atkinson relative overflow-hidden">
       {/* Mobile-first Header */}
-      <header className="bg-slate-900 text-white pt-12 pb-8 md:pt-32 md:pb-12 px-6 rounded-b-[2rem] shadow-md relative overflow-hidden">
-        <DecorativeLeaves variant="dark" />
-        <h1 className="text-3xl font-bold mb-2 relative z-10">Magandang Araw!</h1>
-        <p className="text-slate-300 text-lg relative z-10">Maligayang pagdating. <b>Konektado Kita.</b></p>
-      </header>
+      <BotHeader 
+        title="Magandang Araw!"
+        message={<>Maligayang pagdating! Ako ang inyong AI assistant. <b>Konektado Kita.</b></>}
+      />
 
       <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-8 space-y-8">
 

@@ -97,7 +97,7 @@ export default function ResidentsPage() {
   return (
     <React.Fragment>
 
-      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
@@ -113,7 +113,7 @@ export default function ResidentsPage() {
 
         {/* Info Card */}
         <div className="bg-cyan-50 border border-cyan-100 rounded-xl p-4 mb-8 flex gap-3 text-cyan-800 text-sm">
-          <Info className="w-5 h-5 flex-shrink-0" />
+          <Info className="w-5 h-5 shrink-0" />
           <p>
             Residents archived from this registry can still be accessed in the <strong>Archives</strong> section. 
             All changes are synchronized across the system instantly.

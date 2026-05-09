@@ -6,6 +6,7 @@ import { submitServiceRequest } from '@/lib/requests';
 import { getResidentByMobile } from '@/lib/residents';
 import { getClientSession } from '@/lib/auth-demo';
 import { useRouter } from 'next/navigation';
+import { BotHeader } from '@/components/ui/BotHeader';
 import { SuccessVideoModal } from '@/components/ui/SuccessVideoModal';
 
 export default function CitizenServices() {
@@ -96,13 +97,11 @@ export default function CitizenServices() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-atkinson">
-      <header className="bg-sky-700 text-white pt-12 pb-8 md:pt-32 md:pb-12 px-6 rounded-b-[2rem] shadow-md">
-        <div className="flex items-center gap-3 mb-2">
-          <FileText className="w-8 h-8 opacity-80" />
-          <h1 className="text-3xl font-bold">Services</h1>
-        </div>
-        <p className="text-sky-100 text-lg">Kumuha ng mga opisyal na dokumento ng barangay online.</p>
-      </header>
+      <BotHeader 
+        title="Kailangan ng Dokumento?"
+        message="Tutulungan kitang kumuha ng Clearance, Indigency, at iba pa nang mabilis."
+        animationType="thinking"
+      />
 
       <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-8">
         {!selectedService ? (
