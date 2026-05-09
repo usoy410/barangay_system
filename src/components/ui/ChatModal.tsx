@@ -1,7 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Send, Bot, User } from 'lucide-react';
+import { X, Send, User } from 'lucide-react';
+import { KapAvatar } from './KapAvatar';
+
+import ReactMarkdown from 'react-markdown';
 
 interface ChatMessage {
   id: string;
@@ -115,8 +118,8 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center shadow-md">
-              <Bot className="w-5 h-5 text-white" />
+            <div className="w-12 h-12 shrink-0 flex items-center justify-center">
+              <KapAvatar className="w-full h-full" animationType="standby" />
             </div>
             <div>
               <h2 className="font-bold text-slate-900">Kapitan Bot</h2>
@@ -136,37 +139,60 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/50">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50/50">
           {messages.map((msg) => (
             <div 
               key={msg.id} 
-              className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-300`}
             >
-              <div className={`flex max-w-[85%] gap-2 ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+              <div className={`flex max-w-[85%] gap-3 ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                 {/* Avatar */}
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-auto ${msg.sender === 'user' ? 'bg-indigo-600' : 'bg-slate-900'}`}>
-                  {msg.sender === 'user' ? <User className="w-4 h-4 text-white" /> : <Bot className="w-4 h-4 text-white" />}
+                <div className={`w-10 h-10 shrink-0 mt-auto flex items-center justify-center ${msg.sender === 'user' ? 'bg-indigo-600 rounded-2xl shadow-sm' : ''}`}>
+                  {msg.sender === 'user' ? (
+                    <User className="w-5 h-5 text-white" />
+                  ) : (
+                    <KapAvatar className="w-full h-full" animationType="standby" />
+                  )}
                 </div>
                 
                 {/* Bubble */}
-                <div className={`p-3.5 rounded-2xl shadow-sm text-sm ${
+                <div className={`p-4 rounded-3xl shadow-sm text-sm sm:text-base ${
                   msg.sender === 'user' 
                     ? 'bg-indigo-600 text-white rounded-br-sm' 
                     : 'bg-white text-slate-700 border border-slate-100 rounded-bl-sm'
                 }`}>
-                  {msg.text}
+                  {msg.sender === 'user' ? (
+                    <div className="leading-relaxed">{msg.text}</div>
+                  ) : (
+                    <div className="markdown-content">
+                      <ReactMarkdown
+                        components={{
+                          p: ({ children }) => <p className="mb-3 last:mb-0 leading-relaxed">{children}</p>,
+                          ul: ({ children }) => <ul className="list-disc ml-5 mb-3 space-y-1.5">{children}</ul>,
+                          ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 space-y-1.5">{children}</ol>,
+                          li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+                          strong: ({ children }) => <strong className="font-bold text-slate-900">{children}</strong>,
+                          h1: ({ children }) => <h1 className="text-lg font-bold mb-2 text-slate-900">{children}</h1>,
+                          h2: ({ children }) => <h2 className="text-base font-bold mb-2 text-slate-900">{children}</h2>,
+                          h3: ({ children }) => <h3 className="text-sm font-bold mb-1 text-slate-900">{children}</h3>,
+                        }}
+                      >
+                        {msg.text}
+                      </ReactMarkdown>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           ))}
           
           {isTyping && (
-            <div className="flex justify-start">
-              <div className="flex max-w-[85%] gap-2 flex-row">
-                <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center shrink-0 mt-auto">
-                  <Bot className="w-4 h-4 text-white" />
+            <div className="flex justify-start animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="flex max-w-[85%] gap-3 flex-row">
+                <div className="w-10 h-10 shrink-0 mt-auto flex items-center justify-center">
+                  <KapAvatar className="w-full h-full" animationType="thinking" />
                 </div>
-                <div className="p-4 rounded-2xl bg-white border border-slate-100 rounded-bl-sm shadow-sm flex items-center gap-1">
+                <div className="p-4 rounded-3xl bg-white border border-slate-100 rounded-bl-sm shadow-sm flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                   <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
                   <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
