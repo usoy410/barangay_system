@@ -7,6 +7,7 @@ import { getResidentByMobile } from '@/lib/residents';
 import { getResidentRequests } from '@/lib/requests';
 import { getResidentIncidents } from '@/lib/incidents';
 import { User, MapPin, Phone, Calendar, LogOut, ChevronRight, Clock, CheckCircle2, AlertCircle, FileText, ShieldAlert, History } from 'lucide-react';
+import { LoadMoreButton } from '@/components/ui/LoadMoreButton';
 import type { Resident, ClearanceRequest, Incident } from '@/types/database';
 
 export default function AccountPage() {
@@ -14,8 +15,16 @@ export default function AccountPage() {
   const [resident, setResident] = useState<Resident | null>(null);
   const [requests, setRequests] = useState<ClearanceRequest[]>([]);
   const [incidents, setIncidents] = useState<Incident[]>([]);
-  const [activeTab, setActiveTab] = useState<'requests' | 'incidents'>('requests');
+  const [activeTab, setActiveTab] = useState<'requests' | 'incidents' | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingItems, setLoadingItems] = useState(false);
+  
+  // Pagination states
+  const [requestPage, setRequestPage] = useState(0);
+  const [incidentPage, setIncidentPage] = useState(0);
+  const [hasMoreRequests, setHasMoreRequests] = useState(true);
+  const [hasMoreIncidents, setHasMoreIncidents] = useState(true);
+  const PAGE_SIZE = 5;
 
   useEffect(() => {
     async function loadProfile() {
@@ -29,10 +38,6 @@ export default function AccountPage() {
         const profile = await getResidentByMobile(session.mobile);
         if (profile) {
           setResident(profile);
-          const history = await getResidentRequests(profile.id);
-          const reported = await getResidentIncidents(profile.id);
-          setRequests(history);
-          setIncidents(reported);
         }
       } catch (error) {
         console.error('Failed to load profile');
@@ -43,6 +48,67 @@ export default function AccountPage() {
 
     loadProfile();
   }, [router]);
+
+  // Initial load for tabs
+  useEffect(() => {
+    if (activeTab === 'requests' && requests.length === 0 && resident) {
+      loadMoreRequests(true);
+    } else if (activeTab === 'incidents' && incidents.length === 0 && resident) {
+      loadMoreIncidents(true);
+    }
+  }, [activeTab, resident]);
+
+  const loadMoreRequests = async (initial = false) => {
+    if (!resident || loadingItems || (!initial && !hasMoreRequests)) return;
+    
+    setLoadingItems(true);
+    try {
+      const page = initial ? 0 : requestPage + 1;
+      const from = page * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+      
+      const newRequests = await getResidentRequests(resident.id, from, to);
+      
+      if (initial) {
+        setRequests(newRequests);
+      } else {
+        setRequests(prev => [...prev, ...newRequests]);
+      }
+      
+      setRequestPage(page);
+      setHasMoreRequests(newRequests.length === PAGE_SIZE);
+    } catch (error) {
+      console.error('Failed to load requests:', error);
+    } finally {
+      setLoadingItems(false);
+    }
+  };
+
+  const loadMoreIncidents = async (initial = false) => {
+    if (!resident || loadingItems || (!initial && !hasMoreIncidents)) return;
+    
+    setLoadingItems(true);
+    try {
+      const page = initial ? 0 : incidentPage + 1;
+      const from = page * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+      
+      const newIncidents = await getResidentIncidents(resident.id, from, to);
+      
+      if (initial) {
+        setIncidents(newIncidents);
+      } else {
+        setIncidents(prev => [...prev, ...newIncidents]);
+      }
+      
+      setIncidentPage(page);
+      setHasMoreIncidents(newIncidents.length === PAGE_SIZE);
+    } catch (error) {
+      console.error('Failed to load incidents:', error);
+    } finally {
+      setLoadingItems(false);
+    }
+  };
 
   const handleLogout = () => {
     clearDemoSession();
@@ -89,17 +155,28 @@ export default function AccountPage() {
     <div className="min-h-screen bg-slate-50 font-atkinson">
       {/* Header Profile Section */}
       <div className="bg-slate-900 pt-32 pb-20 px-6 text-white relative overflow-hidden">
-        <div className="relative z-10 max-w-2xl mx-auto flex items-center gap-6">
-          <div className="w-24 h-24 bg-cyan-600 rounded-[2rem] flex items-center justify-center shadow-2xl shadow-cyan-900/50">
-            <User className="w-12 h-12 text-white" />
+        <div className="relative z-10 max-w-2xl mx-auto flex items-center justify-between gap-6">
+          <div className="flex items-center gap-6">
+            <div className="w-24 h-24 bg-cyan-600 rounded-[2rem] flex items-center justify-center shadow-2xl shadow-cyan-900/50">
+              <User className="w-12 h-12 text-white" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-black tracking-tight">{resident?.first_name} {resident?.last_name}</h1>
+              <p className="text-slate-400 font-medium flex items-center gap-2 mt-1">
+                <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                Verified Resident
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-3xl font-black tracking-tight">{resident?.first_name} {resident?.last_name}</h1>
-            <p className="text-slate-400 font-medium flex items-center gap-2 mt-1">
-              <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-              Verified Resident
-            </p>
-          </div>
+
+          <button 
+            onClick={handleLogout}
+            className="p-4 bg-white/10 hover:bg-white/20 text-white rounded-2xl transition-all active:scale-95 group flex items-center gap-2 border border-white/10"
+            title="Sign Out"
+          >
+            <LogOut className="w-5 h-5" />
+            <span className="hidden sm:inline font-bold text-sm">Sign Out</span>
+          </button>
         </div>
         
         {/* Abstract Background */}
@@ -135,29 +212,48 @@ export default function AccountPage() {
 
           <div className="space-y-4">
             {activeTab === 'requests' ? (
-              requests.length === 0 ? (
-                <EmptyHistory icon={<FileText className="w-12 h-12" />} message="No document requests found." link="/services" linkText="Request a document" />
-              ) : (
-                requests.map((req) => <RequestStatusCard key={req.id} request={req} />)
-              )
+              <>
+                {requests.length === 0 && !loadingItems ? (
+                  <EmptyHistory icon={<FileText className="w-12 h-12" />} message="No document requests found." link="/services" linkText="Request a document" />
+                ) : (
+                  <>
+                    {requests.map((req) => <RequestStatusCard key={req.id} request={req} />)}
+                    {hasMoreRequests && (
+                      <LoadMoreButton 
+                        onClick={() => loadMoreRequests()}
+                        isLoading={loadingItems}
+                        label="Load More Documents"
+                        variant="cyan"
+                      />
+                    )}
+                  </>
+                )}
+              </>
+            ) : activeTab === 'incidents' ? (
+              <>
+                {incidents.length === 0 && !loadingItems ? (
+                  <EmptyHistory icon={<ShieldAlert className="w-12 h-12" />} message="No incident reports found." link="/incidents" linkText="Report an incident" />
+                ) : (
+                  <>
+                    {incidents.map((incident) => <IncidentStatusCard key={incident.id} incident={incident} />)}
+                    {hasMoreIncidents && (
+                      <LoadMoreButton 
+                        onClick={() => loadMoreIncidents()}
+                        isLoading={loadingItems}
+                        label="Load More Reports"
+                        variant="amber"
+                      />
+                    )}
+                  </>
+                )}
+              </>
             ) : (
-              incidents.length === 0 ? (
-                <EmptyHistory icon={<ShieldAlert className="w-12 h-12" />} message="No incident reports found." link="/incidents" linkText="Report an incident" />
-              ) : (
-                incidents.map((incident) => <IncidentStatusCard key={incident.id} incident={incident} />)
-              )
+              <div className="bg-white rounded-[2rem] p-12 text-center border border-slate-100 shadow-sm">
+                <p className="text-slate-400 font-medium">Select a tab above to view your history.</p>
+              </div>
             )}
           </div>
         </div>
-
-        {/* Actions */}
-        <button 
-          onClick={handleLogout}
-          className="w-full bg-white border border-red-100 text-red-500 py-6 rounded-[2rem] font-black flex items-center justify-center gap-3 hover:bg-red-50 transition-all active:scale-95 shadow-sm"
-        >
-          <LogOut className="w-5 h-5" />
-          Sign Out of Portal
-        </button>
       </div>
     </div>
   );

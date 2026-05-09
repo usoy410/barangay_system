@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Plus, Edit, Trash2, Bell, Calendar, Tag, CheckCircle, XCircle, Search } from 'lucide-react';
+import { Plus, Edit, Trash2, Bell, Calendar, Tag, CheckCircle, XCircle, Search, Clock } from 'lucide-react';
 import { getAnnouncements, deleteAnnouncement, updateAnnouncement } from '@/lib/announcements';
 import { Announcement } from '@/types/database';
 import { clsx } from 'clsx';
@@ -164,17 +164,37 @@ const AnnouncementCard = ({
         <p className="text-slate-600 text-sm mb-6 line-clamp-3 leading-relaxed">{announcement.content}</p>
 
         <div className="flex items-center justify-between mt-auto pt-6 border-t border-slate-50">
-          <div className="flex items-center gap-4 text-slate-400 text-xs font-medium">
+          <div className="flex flex-col gap-2 text-slate-400 text-[10px] font-bold">
             <div className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4" />
-              {new Date(announcement.created_at).toLocaleDateString()}
+              <Calendar className="w-3.5 h-3.5" />
+              Created {new Date(announcement.created_at).toLocaleDateString()}
             </div>
+            {announcement.starts_at && (
+              <div className={clsx(
+                "flex items-center gap-1.5",
+                new Date(announcement.starts_at) > new Date() ? "text-amber-500" : "text-slate-400"
+              )}>
+                <Clock className="w-3.5 h-3.5" />
+                Starts {new Date(announcement.starts_at).toLocaleString()}
+                {new Date(announcement.starts_at) > new Date() && " (Scheduled)"}
+              </div>
+            )}
+            {announcement.expires_at && (
+              <div className={clsx(
+                "flex items-center gap-1.5",
+                new Date(announcement.expires_at) < new Date() ? "text-red-500" : "text-slate-400"
+              )}>
+                <Clock className="w-3.5 h-3.5" />
+                Expires {new Date(announcement.expires_at).toLocaleString()}
+                {new Date(announcement.expires_at) < new Date() && " (Expired)"}
+              </div>
+            )}
           </div>
           
           <button 
             onClick={() => onToggleStatus(announcement)}
             className={clsx(
-              "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all",
+              "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0",
               announcement.is_active 
                 ? "bg-green-50 text-green-700 hover:bg-green-100" 
                 : "bg-slate-100 text-slate-500 hover:bg-slate-200"

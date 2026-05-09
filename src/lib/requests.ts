@@ -114,14 +114,20 @@ export async function getRequestCount(status?: ClearanceRequest['status']) {
 }
 
 /**
- * Fetches all document requests for a specific resident.
+ * Fetches all document requests for a specific resident with pagination.
  */
-export async function getResidentRequests(residentId: string) {
-  const { data, error } = await supabase
+export async function getResidentRequests(residentId: string, from?: number, to?: number) {
+  let query = supabase
     .from('clearance_requests')
     .select('*')
     .eq('resident_id', residentId)
     .order('created_at', { ascending: false });
+
+  if (from !== undefined && to !== undefined) {
+    query = query.range(from, to);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error('Error fetching resident requests:', error);

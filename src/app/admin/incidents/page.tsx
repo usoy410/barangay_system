@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { IncidentFeed } from '@/components/incidents/IncidentFeed';
 import { getIncidents, updateIncidentStatus, getIncidentCount } from '@/lib/incidents';
 import type { Incident } from '@/types/database';
 import { AlertTriangle, ShieldAlert, Loader2 } from 'lucide-react';
+import { LoadMoreButton } from '@/components/ui/LoadMoreButton';
 
 const PAGE_SIZE = 10;
 
@@ -20,8 +21,6 @@ export default function IncidentsPage() {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
   const [stats, setStats] = useState({ pending: 0, active: 0, resolved: 0 });
-  
-  const observerTarget = useRef<HTMLDivElement>(null);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -72,26 +71,6 @@ export default function IncidentsPage() {
     fetchIncidents(0, true);
   }, [activeTab, fetchIncidents, fetchStats]);
 
-  // Intersection Observer for Infinite Scroll
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && hasMore && !isLoading && !isLoadingMore) {
-          const nextPage = page + 1;
-          setPage(nextPage);
-          fetchIncidents(nextPage);
-        }
-      },
-      { threshold: 1.0 }
-    );
-
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
-    }
-
-    return () => observer.disconnect();
-  }, [hasMore, isLoading, isLoadingMore, page, fetchIncidents]);
-
   const handleStatusUpdate = async (id: string, status: Incident['status']) => {
     await updateIncidentStatus(id, status);
     // Refresh stats and current page to reflect changes
@@ -140,12 +119,18 @@ export default function IncidentsPage() {
               onStatusUpdate={handleStatusUpdate} 
             />
 
-            {/* Intersection Observer Target */}
-            <div ref={observerTarget} className="h-4 w-full" />
-            
-            {isLoadingMore && (
-              <div className="flex justify-center py-8">
-                <Loader2 className="w-8 h-8 text-cyan-600 animate-spin" />
+            {hasMore && incidents.length > 0 && (
+              <div className="mt-8">
+                <LoadMoreButton 
+                  onClick={() => {
+                    const nextPage = page + 1;
+                    setPage(nextPage);
+                    fetchIncidents(nextPage);
+                  }}
+                  isLoading={isLoadingMore}
+                  label="Load More Reports"
+                  variant="slate"
+                />
               </div>
             )}
 

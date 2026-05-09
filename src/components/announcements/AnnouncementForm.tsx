@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Announcement } from '@/types/database';
 import { createAnnouncement, updateAnnouncement } from '@/lib/announcements';
-import { Bell, ArrowLeft, Save, Loader2, Image as ImageIcon } from 'lucide-react';
+import { Bell, ArrowLeft, Save, Loader2, Image as ImageIcon, Calendar } from 'lucide-react';
 import Link from 'next/link';
 
 interface AnnouncementFormProps {
@@ -24,6 +24,8 @@ export function AnnouncementForm({ initialData, isEditing }: AnnouncementFormPro
     category: initialData?.category || 'General' as Announcement['category'],
     image_url: initialData?.image_url || '',
     is_active: initialData?.is_active ?? true,
+    starts_at: initialData?.starts_at || null as string | null,
+    expires_at: initialData?.expires_at || null as string | null,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -151,19 +153,38 @@ export function AnnouncementForm({ initialData, isEditing }: AnnouncementFormPro
               </p>
             </div>
 
-            {/* Active Toggle */}
-            <div className="flex items-center gap-4 p-5 bg-slate-50 rounded-2xl border border-slate-100">
-              <input 
-                type="checkbox" 
-                id="is_active"
-                className="w-5 h-5 accent-cyan-600 rounded-lg"
-                checked={formData.is_active}
-                onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-              />
-              <label htmlFor="is_active" className="text-slate-700 font-bold cursor-pointer">
-                Publish immediately
-                <span className="block text-slate-400 text-xs font-medium">Inactive announcements won't be shown on the resident dashboard.</span>
-              </label>
+
+
+            {/* Scheduling */}
+            <div className="p-8 bg-slate-50 rounded-[2rem] border border-slate-100 space-y-6">
+              <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-cyan-600" />
+                Schedule Visibility
+              </h3>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wider text-[10px]">Display Starts</label>
+                  <input 
+                    type="datetime-local" 
+                    className="w-full px-5 py-4 rounded-2xl border border-slate-200 focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 outline-none transition-all font-medium text-sm"
+                    value={formData.starts_at ? new Date(formData.starts_at).toISOString().slice(0, 16) : ''}
+                    onChange={(e) => setFormData({ ...formData, starts_at: e.target.value ? new Date(e.target.value).toISOString() : null })}
+                  />
+                  <p className="mt-2 text-slate-400 text-[10px]">Leave blank to show immediately after publishing.</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wider text-[10px]">Display Expires</label>
+                  <input 
+                    type="datetime-local" 
+                    className="w-full px-5 py-4 rounded-2xl border border-slate-200 focus:ring-4 focus:ring-cyan-500/10 focus:border-cyan-500 outline-none transition-all font-medium text-sm"
+                    value={formData.expires_at ? new Date(formData.expires_at).toISOString().slice(0, 16) : ''}
+                    onChange={(e) => setFormData({ ...formData, expires_at: e.target.value ? new Date(e.target.value).toISOString() : null })}
+                  />
+                  <p className="mt-2 text-slate-400 text-[10px]">Leave blank to keep showing indefinitely.</p>
+                </div>
+              </div>
             </div>
           </div>
 

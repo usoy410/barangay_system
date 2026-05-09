@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { DocumentRequestModal } from '@/components/services/DocumentRequestModal';
 import { ServiceRequestQueue } from '@/components/services/ServiceRequestQueue';
 import { DocumentPreviewer } from '@/components/services/DocumentPreviewer';
@@ -9,6 +9,7 @@ import { getResidents } from '@/lib/residents';
 import { getServiceRequests, updateRequestStatus, getRequestCount, RequestWithResident } from '@/lib/requests';
 import type { Resident, ClearanceRequest } from '@/types/database';
 import { FileText, Award, ShieldCheck, Download, Users, Inbox, Loader2, Upload, X } from 'lucide-react';
+import { LoadMoreButton } from '@/components/ui/LoadMoreButton';
 
 const PAGE_SIZE = 10;
 
@@ -24,8 +25,6 @@ export default function ServicesPage() {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(0);
   const [counts, setCounts] = useState({ pending: 0, history: 0 });
-
-  const observerTarget = useRef<HTMLDivElement>(null);
 
   const fetchCounts = useCallback(async () => {
     try {
@@ -96,26 +95,6 @@ export default function ServicesPage() {
     setPage(0);
     fetchRequests(0, true);
   }, [activeTab, fetchRequests, fetchCounts]);
-
-  // Infinite Scroll Observer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting && hasMore && !isQueueLoading && !isLoadingMore) {
-          const nextPage = page + 1;
-          setPage(nextPage);
-          fetchRequests(nextPage);
-        }
-      },
-      { threshold: 1.0 }
-    );
-
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
-    }
-
-    return () => observer.disconnect();
-  }, [hasMore, isQueueLoading, isLoadingMore, page, fetchRequests]);
 
   const handleIssue = async (id: string) => {
     try {
@@ -194,12 +173,18 @@ export default function ServicesPage() {
             onViewRequest={setSelectedRequest}
           />
 
-          {/* Observer Target */}
-          <div ref={observerTarget} className="h-4 w-full" />
-
-          {isLoadingMore && (
-            <div className="flex justify-center py-8">
-              <Loader2 className="w-8 h-8 text-cyan-600 animate-spin" />
+          {hasMore && requests.length > 0 && (
+            <div className="mt-8">
+              <LoadMoreButton 
+                onClick={() => {
+                  const nextPage = page + 1;
+                  setPage(nextPage);
+                  fetchRequests(nextPage);
+                }}
+                isLoading={isLoadingMore}
+                label="Load More Requests"
+                variant="cyan"
+              />
             </div>
           )}
 

@@ -71,6 +71,8 @@ export interface Announcement {
   category: 'General' | 'Emergency' | 'Event' | 'Holiday';
   image_url?: string | null;
   is_active: boolean;
+  starts_at?: string | null;
+  expires_at?: string | null;
   created_at: string;
   updated_at: string;
 }

@@ -19,7 +19,11 @@ export async function getAnnouncements(activeOnly: boolean = true) {
     .order('created_at', { ascending: false });
 
   if (activeOnly) {
-    query = query.eq('is_active', true);
+    const now = new Date().toISOString();
+    query = query
+      .eq('is_active', true)
+      .or(`starts_at.lte.${now},starts_at.is.null`)
+      .or(`expires_at.gt.${now},expires_at.is.null`);
   }
 
   const { data, error } = await query;

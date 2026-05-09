@@ -82,16 +82,24 @@ export async function reportIncident(report: Omit<Incident, 'id' | 'status' | 'c
 }
 
 /**
- * Fetches incidents reported by a specific resident.
+ * Fetches incidents reported by a specific resident with pagination.
  * 
  * @param residentId - The UUID of the resident.
+ * @param from - Start index (0-based).
+ * @param to - End index (0-based).
  */
-export async function getResidentIncidents(residentId: string) {
-  const { data, error } = await supabase
+export async function getResidentIncidents(residentId: string, from?: number, to?: number) {
+  let query = supabase
     .from('incidents')
     .select('*')
     .eq('resident_id', residentId)
     .order('created_at', { ascending: false });
+
+  if (from !== undefined && to !== undefined) {
+    query = query.range(from, to);
+  }
+
+  const { data, error } = await query;
 
   if (error) {
     console.error('Error fetching resident incidents:', error);
