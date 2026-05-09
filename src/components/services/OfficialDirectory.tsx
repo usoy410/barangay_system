@@ -54,13 +54,13 @@ export const OfficialDirectory: React.FC<OfficialDirectoryProps> = ({ officials 
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <User className="w-6 h-6 text-sky-600" />
-          Opisyal ng Barangay
+          Contact sa Barangay
         </h2>
         <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-2 py-1 rounded-full uppercase tracking-wider">
           Konektado Kita
         </span>
       </div>
-      
+
       <div className="grid grid-cols-1 gap-4">
         {officials.length === 0 ? (
           <div className="bg-white p-10 rounded-3xl border-2 border-dashed border-slate-200 text-center space-y-2">
@@ -71,8 +71,8 @@ export const OfficialDirectory: React.FC<OfficialDirectoryProps> = ({ officials 
           </div>
         ) : (
           officials.map((official) => (
-            <div 
-              key={official.id} 
+            <div
+              key={official.id}
               className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="p-5 flex items-center justify-between">
@@ -93,8 +93,8 @@ export const OfficialDirectory: React.FC<OfficialDirectoryProps> = ({ officials 
                     </p>
                   </div>
                 </div>
-                
-                <button 
+
+                <button
                   onClick={() => setSelectedOfficial(selectedOfficial === official.id ? null : official.id)}
                   className={cn(
                     "p-2 rounded-full transition-colors",
@@ -110,14 +110,14 @@ export const OfficialDirectory: React.FC<OfficialDirectoryProps> = ({ officials 
                   <div className="flex flex-col gap-4 mt-2">
                     {/* Contact Actions */}
                     <div className="grid grid-cols-2 gap-3">
-                      <a 
+                      <a
                         href={`tel:${official.mobile_number}`}
                         className="flex items-center justify-center gap-2 bg-white border border-slate-200 p-3 rounded-xl hover:border-sky-300 hover:text-sky-600 transition-all font-semibold shadow-sm"
                       >
                         <Phone className="w-5 h-5" />
                         Tawagan
                       </a>
-                      <a 
+                      <a
                         href={`sms:${official.mobile_number}`}
                         className="flex items-center justify-center gap-2 bg-sky-600 text-white p-3 rounded-xl hover:bg-sky-700 transition-all font-semibold shadow-sm"
                       >
@@ -132,7 +132,7 @@ export const OfficialDirectory: React.FC<OfficialDirectoryProps> = ({ officials 
                         <div key={idx} className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm space-y-2">
                           <div className="flex justify-between items-start">
                             <h4 className="text-sm font-bold text-slate-800">{template.title}</h4>
-                            <button 
+                            <button
                               onClick={() => handleCopy(template.text(`${official.first_name}`), idx)}
                               className="text-slate-400 hover:text-sky-600 transition-colors"
                             >

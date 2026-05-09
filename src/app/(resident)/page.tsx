@@ -8,25 +8,32 @@ import { useRouter } from 'next/navigation';
 import { BotHeader } from '@/components/ui/BotHeader';
 import { OfficialDirectory } from '@/components/services/OfficialDirectory';
 import { getOfficials } from '@/lib/residents';
-import { Resident } from '@/types/database';
+import { getAnnouncements } from '@/lib/announcements';
+import { Resident, Announcement } from '@/types/database';
+import { AnnouncementCarousel } from '@/components/announcements/AnnouncementCarousel';
 
 export default function CitizenHome() {
   const router = useRouter();
   const [officials, setOfficials] = React.useState<Resident[]>([]);
+  const [announcements, setAnnouncements] = React.useState<Announcement[]>([]);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    async function loadOfficials() {
+    async function loadData() {
       try {
-        const data = await getOfficials();
-        setOfficials(data);
+        const [officialsData, announcementsData] = await Promise.all([
+          getOfficials(),
+          getAnnouncements(true)
+        ]);
+        setOfficials(officialsData);
+        setAnnouncements(announcementsData);
       } catch (error) {
-        console.error('Failed to load officials:', error);
+        console.error('Failed to load data:', error);
       } finally {
         setLoading(false);
       }
     }
-    loadOfficials();
+    loadData();
   }, []);
 
   return (
@@ -39,18 +46,14 @@ export default function CitizenHome() {
 
       <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-8 space-y-8">
 
-        {/* Important Notice */}
-        <div className="bg-amber-100 border-l-4 border-amber-500 rounded-lg p-5">
-          <div className="flex items-start gap-4">
-            <Bell className="w-8 h-8 text-amber-700 shrink-0" />
-            <div>
-              <h2 className="font-bold text-amber-900 text-lg mb-1">Community Assembly</h2>
-              <p className="text-amber-800 text-base">
-                Samahan kami ngayong Sabado ng 9:00 AM sa Barangay Plaza. Lahat ay inaanyayahan.
-              </p>
-            </div>
-          </div>
-        </div>
+        {/* Announcements Carousel */}
+        <section>
+          {loading ? (
+            <div className="h-48 bg-slate-100 animate-pulse rounded-[2.5rem]" />
+          ) : announcements.length > 0 ? (
+            <AnnouncementCarousel announcements={announcements} />
+          ) : null}
+        </section>
 
         {/* Quick Actions */}
         <section>

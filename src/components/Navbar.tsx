@@ -22,10 +22,11 @@ export const Navbar: React.FC = () => {
     { href: '/admin/residents', icon: <Users className="w-4 h-4" />, label: 'Residents' },
     { href: '/admin/services', icon: <FileText className="w-4 h-4" />, label: 'Services' },
     { href: '/admin/incidents', icon: <AlertTriangle className="w-4 h-4" />, label: 'Incidents' },
+    { href: '/admin/announcements', icon: <Home className="w-4 h-4" />, label: 'Announcements' },
   ];
 
   return (
-    <nav className="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-40">
+    <nav className="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center gap-8">
@@ -83,7 +84,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-50 md:hidden animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[60] md:hidden animate-in fade-in duration-200">
           {/* Backdrop Blur */}
           <div 
             className="absolute inset-0 bg-slate-900/60 backdrop-blur-md" 
@@ -91,7 +92,7 @@ export const Navbar: React.FC = () => {
           />
           
           {/* Menu Content */}
-          <div className="absolute top-20 left-4 right-4 bg-white rounded-[2.5rem] p-8 shadow-2xl border border-slate-100 animate-in slide-in-from-top-4 opacity-0 duration-200 ease-out fill-mode-forwards">
+          <div className="absolute top-20 left-4 right-4 bg-white rounded-[2.5rem] p-8 shadow-2xl border border-slate-100 animate-in fade-in slide-in-from-top-4 duration-300 ease-out fill-mode-forwards">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Menu Navigation</h2>
               <button 

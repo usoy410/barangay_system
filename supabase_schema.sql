@@ -65,6 +65,7 @@ create table public.announcements (
     title text not null,
     content text not null,
     category text check (category in ('General', 'Emergency', 'Event', 'Holiday')) default 'General' not null,
+    image_url text,
     is_active boolean default true not null,
     created_at timestamp with time zone default timezone('utc'::text, now()) not null,
     updated_at timestamp with time zone default timezone('utc'::text, now()) not null
