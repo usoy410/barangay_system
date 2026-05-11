@@ -55,16 +55,15 @@ export default function CitizenNavigation() {
         : 'bg-transparent'
         }`}>
         <Link href="/" className="flex items-center gap-3 group cursor-pointer">
-          <div className="relative w-10 h-10 transition-all duration-300">
+          <div className="relative h-10 w-44 transition-all duration-300">
             <Image
-              src="/images/barangay-hall.png"
-              alt="Barangay Hall"
+              src="/images/Konektado_logo.png"
+              alt="Konektado"
               fill
-              sizes="40px"
-              className="object-contain transform group-hover:scale-110 transition-transform duration-200 ease-out drop-shadow-md group-hover:drop-shadow-lg"
+              className="object-contain"
+              priority
             />
           </div>
-          <span className="text-xl font-black text-white tracking-tighter uppercase">Konektado</span>
         </Link>
 
         <nav className="flex items-center gap-1">
