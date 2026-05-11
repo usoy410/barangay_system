@@ -15,7 +15,7 @@ export type RequestWithResident = ClearanceRequest & {
 export async function getServiceRequests(status?: ClearanceRequest['status'] | ClearanceRequest['status'][], from?: number, to?: number) {
   let query = supabase
     .from('clearance_requests')
-    .select('*, residents(first_name, last_name, address, birth_date, civil_status, gender, occupation, mobile_number)');
+    .select('*, residents!clearance_requests_resident_id_fkey(first_name, last_name, address, birth_date, civil_status, gender, occupation, mobile_number)');
 
   if (status) {
     if (Array.isArray(status)) {

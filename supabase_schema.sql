@@ -33,7 +33,8 @@ create table public.clearance_requests (
     purpose text not null,
     status text check (status in ('Pending', 'Issued', 'Void')) default 'Pending' not null,
     issued_at timestamp with time zone,
-    issued_by uuid references auth.users(id),
+    issued_by uuid references public.residents(id),
+    updated_by uuid, -- Transit column for audit logs
     created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
@@ -47,6 +48,7 @@ create table public.incidents (
     location text,
     image_url text,
     status text check (status in ('Pending', 'In Progress', 'Resolved', 'Spam')) default 'Pending' not null,
+    updated_by uuid, -- Transit column for audit logs
     created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
@@ -60,6 +62,7 @@ create table public.announcements (
     is_active boolean default true not null,
     starts_at timestamp with time zone default timezone('utc'::text, now()),
     expires_at timestamp with time zone,
+    updated_by uuid, -- Transit column for audit logs
     created_at timestamp with time zone default timezone('utc'::text, now()) not null,
     updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
