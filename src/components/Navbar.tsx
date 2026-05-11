@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Home, Users, FileText, AlertTriangle, Menu, X, LogOut } from 'lucide-react';
+import { Home, Users, FileText, AlertTriangle, Menu, X, LogOut, ChevronDown } from 'lucide-react';
 import { clearDemoSession } from '@/lib/auth-demo';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -11,6 +11,22 @@ export const Navbar: React.FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = React.useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsUserDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleSignOut = () => {
     clearDemoSession();
@@ -41,7 +57,6 @@ export const Navbar: React.FC = () => {
                     priority
                   />
                 </div>
-                <span className="font-lexend font-bold text-white tracking-tight">Admin</span>
               </div>
             </Link>
             
@@ -69,16 +84,40 @@ export const Navbar: React.FC = () => {
             
             <div className="hidden md:block w-px h-6 bg-white/10 mx-4" />
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 relative" ref={dropdownRef}>
               <button 
-                onClick={handleSignOut}
-                className="hidden sm:inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-xl text-sm font-bold text-white/70 hover:text-white hover:bg-white/10 transition-all duration-150 ease-out active:scale-[0.97] cursor-pointer"
+                onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                className={`flex items-center gap-2 p-1 rounded-full border transition-all duration-200 ease-out active:scale-95 ${
+                  isUserDropdownOpen 
+                    ? 'bg-white/15 border-white/40 ring-4 ring-white/5' 
+                    : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                }`}
               >
-                Sign Out
+                <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white shadow-inner">
+                  <Users className="w-5 h-5" />
+                </div>
+                <ChevronDown className={`w-4 h-4 text-white/50 transition-transform duration-300 ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
-              <div className="w-9 h-9 bg-white/10 rounded-full border border-white/20 flex items-center justify-center text-white/70">
-                <Users className="w-5 h-5" />
-              </div>
+
+              {/* User Dropdown Menu */}
+              {isUserDropdownOpen && (
+                <div className="absolute right-0 top-full mt-3 w-56 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 z-50">
+                  <div className="p-4 border-b border-white/5">
+                    <p className="text-xs font-black text-white/40 uppercase tracking-widest mb-1">Administrator</p>
+                    <p className="text-sm font-bold text-white truncate">Barangay Admin</p>
+                  </div>
+
+                  <div className="p-2 bg-white/5">
+                    <button 
+                      onClick={handleSignOut}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
