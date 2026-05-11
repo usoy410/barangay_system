@@ -1,22 +1,12 @@
--- SUPABASE SCHEMA - BARANGAY INFORMATION SYSTEM
--- Version: 1.1.0
--- Description: Core schema for resident management, service requests, incident reporting, and community announcements.
+-- BARANGAY INFORMATION SYSTEM
 
 -- Enable UUID extension
 create extension if not exists "uuid-ossp";
 
--- 1. Households Table
-create table public.households (
-    id uuid default uuid_generate_v4() primary key,
-    household_name text not null,
-    address text not null,
-    created_at timestamp with time zone default timezone('utc'::text, now()) not null
-);
 
 -- 2. Residents Table
 create table public.residents (
     id uuid default uuid_generate_v4() primary key,
-    household_id uuid references public.households(id) on delete set null,
     first_name text not null,
     middle_name text,
     last_name text not null,
@@ -30,6 +20,7 @@ create table public.residents (
     occupation text,
     profile_url text,
     is_archived boolean default false not null,
+    updated_by uuid, -- Transit column for audit logs
     created_at timestamp with time zone default timezone('utc'::text, now()) not null,
     updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
@@ -74,14 +65,11 @@ create table public.announcements (
 );
 
 -- RLS (Row Level Security) Configuration
-alter table public.households enable row level security;
 alter table public.residents enable row level security;
 alter table public.clearance_requests enable row level security;
 alter table public.incidents enable row level security;
 alter table public.announcements enable row level security;
 
--- 1. Households: Authenticated users can see all
-create policy "Authenticated users can see all households" on public.households for select using (auth.role() = 'authenticated');
 
 -- 2. Residents: Public can register and look up, Auth (Officials) can manage
 create policy "Anyone can register" on public.residents for insert with check (true);
@@ -180,21 +168,44 @@ create policy "Officials can view audit logs" on public.audit_logs for select us
 -- Automated Audit Function
 create or replace function public.process_audit_log()
 returns trigger as $$
+declare
+    current_user_id uuid;
 begin
+    -- 1. Try to get ID from the record itself (if we passed updated_by)
+    if (TG_OP = 'UPDATE' or TG_OP = 'INSERT') then
+        current_user_id := NEW.updated_by;
+    end if;
+
+    -- 2. Fallback to Supabase Auth or Session Variable
+    if (current_user_id is null) then
+        current_user_id := coalesce(
+            auth.uid(), 
+            nullif(current_setting('app.current_user_id', true), '')::uuid
+        );
+    end if;
+
     if (TG_OP = 'UPDATE') then
         insert into public.audit_logs (table_name, record_id, action, old_data, new_data, changed_by)
-        values (TG_TABLE_NAME, OLD.id, TG_OP, to_jsonb(OLD), to_jsonb(NEW), auth.uid());
+        values (TG_TABLE_NAME, OLD.id, TG_OP, to_jsonb(OLD), to_jsonb(NEW), current_user_id);
         return NEW;
     elsif (TG_OP = 'DELETE') then
         insert into public.audit_logs (table_name, record_id, action, old_data, changed_by)
-        values (TG_TABLE_NAME, OLD.id, TG_OP, to_jsonb(OLD), auth.uid());
+        values (TG_TABLE_NAME, OLD.id, TG_OP, to_jsonb(OLD), current_user_id);
         return OLD;
     elsif (TG_OP = 'INSERT') then
         insert into public.audit_logs (table_name, record_id, action, new_data, changed_by)
-        values (TG_TABLE_NAME, NEW.id, TG_OP, to_jsonb(NEW), auth.uid());
+        values (TG_TABLE_NAME, NEW.id, TG_OP, to_jsonb(NEW), current_user_id);
         return NEW;
     end if;
     return null;
+end;
+$$ language plpgsql security definer;
+
+-- Helper to set the current user ID for the session (Custom Auth support)
+create or replace function public.set_app_user_id(user_id uuid)
+returns void as $$
+begin
+    perform set_config('app.current_user_id', user_id::text, true);
 end;
 $$ language plpgsql security definer;
 
@@ -205,4 +216,12 @@ for each row execute procedure public.process_audit_log();
 
 create trigger audit_requests_changes
 after update or delete on public.clearance_requests
+for each row execute procedure public.process_audit_log();
+
+create trigger audit_incidents_changes
+after insert or update or delete on public.incidents
+for each row execute procedure public.process_audit_log();
+
+create trigger audit_announcements_changes
+after insert or update or delete on public.announcements
 for each row execute procedure public.process_audit_log();

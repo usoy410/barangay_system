@@ -34,7 +34,9 @@ export default function AnnouncementsPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this announcement?')) return;
     try {
-      await deleteAnnouncement(id);
+      const { getClientSession } = await import('@/lib/auth-demo');
+      const session = getClientSession();
+      await deleteAnnouncement(id, session?.id);
       setAnnouncements(announcements.filter(a => a.id !== id));
     } catch (error) {
       alert('Failed to delete announcement');
@@ -43,7 +45,9 @@ export default function AnnouncementsPage() {
 
   const handleToggleStatus = async (announcement: Announcement) => {
     try {
-      const updated = await updateAnnouncement(announcement.id, { is_active: !announcement.is_active });
+      const { getClientSession } = await import('@/lib/auth-demo');
+      const session = getClientSession();
+      const updated = await updateAnnouncement(announcement.id, { is_active: !announcement.is_active }, session?.id);
       setAnnouncements(announcements.map(a => a.id === announcement.id ? updated : a));
     } catch (error) {
       alert('Failed to update status');

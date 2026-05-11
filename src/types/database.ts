@@ -1,12 +1,3 @@
-/**
- * Represents a Household entity in the database.
- */
-export interface Household {
-  id: string;
-  household_name: string;
-  address: string;
-  created_at: string;
-}
 
 /**
  * Represents a Resident entity in the database.
@@ -14,7 +5,6 @@ export interface Household {
  */
 export interface Resident {
   id: string;
-  household_id: string | null;
   first_name: string;
   middle_name: string | null;
   last_name: string;

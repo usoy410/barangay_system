@@ -67,10 +67,15 @@ export default function ResidentsPage() {
 
   const handleFormSubmit = async (data: any) => {
     setPendingAction(() => async () => {
+      // Get current admin ID for auditing
+      const { getClientSession } = await import('@/lib/auth-demo');
+      const session = getClientSession();
+      const adminId = session?.id;
+
       if (editingResident) {
-        await updateResident(editingResident.id, data);
+        await updateResident(editingResident.id, data, adminId);
       } else {
-        await createResident(data);
+        await createResident(data, adminId);
       }
       setIsFormOpen(false);
       await fetchResidents(page, searchTerm);
@@ -80,7 +85,11 @@ export default function ResidentsPage() {
 
   const handleArchive = async (id: string) => {
     setPendingAction(() => async () => {
-      await archiveResident(id);
+      // Get current admin ID for auditing
+      const { getClientSession } = await import('@/lib/auth-demo');
+      const session = getClientSession();
+      
+      await archiveResident(id, session?.id);
       await fetchResidents(page, searchTerm);
     });
     setIsPasswordModalOpen(true);

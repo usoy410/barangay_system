@@ -60,8 +60,13 @@ export async function getAnnouncementById(id: string) {
  * Creates a new announcement.
  * 
  * @param announcement - Announcement details (title, content, category, image_url).
+ * @param adminId - The UUID of the admin/official performing the creation for auditing.
  */
-export async function createAnnouncement(announcement: Omit<Announcement, 'id' | 'created_at' | 'updated_at'>) {
+export async function createAnnouncement(announcement: Omit<Announcement, 'id' | 'created_at' | 'updated_at'>, adminId?: string) {
+  if (adminId) {
+    await supabase.rpc('set_app_user_id', { user_id: adminId });
+  }
+
   const { data, error } = await supabase
     .from('announcements')
     .insert([announcement])
@@ -81,8 +86,13 @@ export async function createAnnouncement(announcement: Omit<Announcement, 'id' |
  * 
  * @param id - The UUID of the announcement.
  * @param updates - Fields to update.
+ * @param adminId - The UUID of the admin/official performing the update for auditing.
  */
-export async function updateAnnouncement(id: string, updates: Partial<Omit<Announcement, 'id' | 'created_at' | 'updated_at'>>) {
+export async function updateAnnouncement(id: string, updates: Partial<Omit<Announcement, 'id' | 'created_at' | 'updated_at'>>, adminId?: string) {
+  if (adminId) {
+    await supabase.rpc('set_app_user_id', { user_id: adminId });
+  }
+
   const { data, error } = await supabase
     .from('announcements')
     .update(updates)
@@ -102,8 +112,13 @@ export async function updateAnnouncement(id: string, updates: Partial<Omit<Annou
  * Deletes an announcement.
  * 
  * @param id - The UUID of the announcement.
+ * @param adminId - The UUID of the admin/official performing the deletion for auditing.
  */
-export async function deleteAnnouncement(id: string) {
+export async function deleteAnnouncement(id: string, adminId?: string) {
+  if (adminId) {
+    await supabase.rpc('set_app_user_id', { user_id: adminId });
+  }
+
   const { error } = await supabase
     .from('announcements')
     .delete()

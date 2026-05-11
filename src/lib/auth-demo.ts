@@ -8,6 +8,7 @@ export const SESSION_COOKIE_NAME = 'bis_session';
 export type UserRole = 'resident' | 'official' | 'developer';
 
 export interface DemoSession {
+  id: string;
   role: UserRole;
   mobile: string;
   name: string;

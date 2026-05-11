@@ -43,6 +43,7 @@ export default function LoginPage() {
       }
 
       setDemoSession({
+        id: user.id,
         role: assignedRole,
         mobile: user.mobile_number,
         name: user.first_name

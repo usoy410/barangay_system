@@ -52,12 +52,13 @@ export async function getResidents(options?: {
  * Creates a new resident entry in the database.
  * 
  * @param resident - The resident data to insert.
+ * @param adminId - The UUID of the admin/official performing the creation for auditing.
  * @returns The newly created resident record.
  */
-export async function createResident(resident: Omit<Resident, 'id' | 'created_at' | 'updated_at'>) {
+export async function createResident(resident: Omit<Resident, 'id' | 'created_at' | 'updated_at'>, adminId?: string) {
   const { data, error } = await supabase
     .from('residents')
-    .insert([resident])
+    .insert([{ ...resident, updated_by: adminId }])
     .select()
     .single();
 
@@ -74,12 +75,13 @@ export async function createResident(resident: Omit<Resident, 'id' | 'created_at
  * 
  * @param id - The UUID of the resident.
  * @param updates - Partial resident object with updated fields.
+ * @param adminId - The UUID of the admin/official performing the update for auditing.
  * @returns The updated resident record.
  */
-export async function updateResident(id: string, updates: Partial<Resident>) {
+export async function updateResident(id: string, updates: Partial<Resident>, adminId?: string) {
   const { data, error } = await supabase
     .from('residents')
-    .update(updates)
+    .update({ ...updates, updated_by: adminId })
     .eq('id', id)
     .select()
     .single();
@@ -96,11 +98,12 @@ export async function updateResident(id: string, updates: Partial<Resident>) {
  * Performs a soft delete (archive) on a resident.
  * 
  * @param id - The UUID of the resident to archive.
+ * @param adminId - The UUID of the admin/official performing the archive for auditing.
  */
-export async function archiveResident(id: string) {
+export async function archiveResident(id: string, adminId?: string) {
   const { error } = await supabase
     .from('residents')
-    .update({ is_archived: true })
+    .update({ is_archived: true, updated_by: adminId })
     .eq('id', id);
 
   if (error) {

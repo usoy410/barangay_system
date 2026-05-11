@@ -66,6 +66,14 @@ export async function submitServiceRequest(request: Omit<ClearanceRequest, 'id' 
  * Updates the status of a request (e.g., mark as Issued).
  */
 export async function updateRequestStatus(id: string, status: ClearanceRequest['status'], issuedBy?: string) {
+  // If we have an admin/official ID, set it in the database session for auditing
+  if (issuedBy) {
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (uuidRegex.test(issuedBy)) {
+      await supabase.rpc('set_app_user_id', { user_id: issuedBy });
+    }
+  }
+
   const updates: Partial<ClearanceRequest> = { status };
   
   if (status === 'Issued') {

@@ -72,11 +72,14 @@ export default function IncidentsPage() {
   }, [activeTab, fetchIncidents, fetchStats]);
 
   const handleStatusUpdate = async (id: string, status: Incident['status']) => {
-    await updateIncidentStatus(id, status);
+    // Get current admin ID for auditing
+    const { getClientSession } = await import('@/lib/auth-demo');
+    const session = getClientSession();
+    
+    await updateIncidentStatus(id, status, session?.id);
+    
     // Refresh stats and current page to reflect changes
     fetchStats();
-    // We just refresh the first page for simplicity after an update, 
-    // or we could optimistically update the local state.
     setPage(0);
     fetchIncidents(0, true);
   };

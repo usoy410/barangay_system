@@ -114,8 +114,13 @@ export async function getResidentIncidents(residentId: string, from?: number, to
  * 
  * @param id - The UUID of the incident.
  * @param status - The new status (e.g., 'In Progress', 'Resolved').
+ * @param adminId - The UUID of the admin/official performing the update for auditing.
  */
-export async function updateIncidentStatus(id: string, status: Incident['status']) {
+export async function updateIncidentStatus(id: string, status: Incident['status'], adminId?: string) {
+  if (adminId) {
+    await supabase.rpc('set_app_user_id', { user_id: adminId });
+  }
+
   const { data, error } = await supabase
     .from('incidents')
     .update({ status })

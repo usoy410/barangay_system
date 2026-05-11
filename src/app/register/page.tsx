@@ -45,8 +45,7 @@ export default function RegisterPage() {
         mobile_number: formData.mobile,
         password_hash: hashedPassword,
         role: 'Resident',
-        is_archived: false,
-        household_id: null
+        is_archived: false
       });
 
       alert('Registration successful! Please login.');

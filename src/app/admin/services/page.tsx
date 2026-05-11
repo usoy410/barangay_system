@@ -98,7 +98,11 @@ export default function ServicesPage() {
 
   const handleIssue = async (id: string) => {
     try {
-      await updateRequestStatus(id, 'Issued'); 
+      // Get current admin ID for auditing
+      const { getClientSession } = await import('@/lib/auth-demo');
+      const session = getClientSession();
+      
+      await updateRequestStatus(id, 'Issued', session?.id); 
       setSelectedRequest(null);
       fetchCounts();
       setPage(0);

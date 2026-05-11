@@ -32,10 +32,15 @@ export function AnnouncementForm({ initialData, isEditing }: AnnouncementFormPro
     e.preventDefault();
     setLoading(true);
     try {
+      // Get current admin ID for auditing
+      const { getClientSession } = await import('@/lib/auth-demo');
+      const session = getClientSession();
+      const adminId = session?.id;
+
       if (isEditing && initialData) {
-        await updateAnnouncement(initialData.id, formData);
+        await updateAnnouncement(initialData.id, formData, adminId);
       } else {
-        await createAnnouncement(formData);
+        await createAnnouncement(formData, adminId);
       }
       router.push('/admin/announcements');
       router.refresh();
