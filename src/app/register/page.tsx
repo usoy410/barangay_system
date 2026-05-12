@@ -6,11 +6,14 @@ import { User, Home, ArrowLeft, Phone, Lock, MapPin, Calendar, Heart, Eye, EyeOf
 import Link from 'next/link';
 import { createResident } from '@/lib/residents';
 import { hashPassword } from '@/app/actions/auth';
+import PrivacyNoticeModal from '@/components/auth/PrivacyNoticeModal';
 
 export default function RegisterPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showPrivacyNotice, setShowPrivacyNotice] = useState(true);
+  const [hasAcceptedPrivacy, setHasAcceptedPrivacy] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     firstName: '',
@@ -62,6 +65,11 @@ export default function RegisterPage() {
     }
   };
 
+  const handlePrivacyAccept = () => {
+    setHasAcceptedPrivacy(true);
+    setShowPrivacyNotice(false);
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData(prev => ({
       ...prev,
@@ -89,7 +97,24 @@ export default function RegisterPage() {
           </div>
 
           <div className="p-8 md:p-12">
-            <form onSubmit={handleRegister} className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {!hasAcceptedPrivacy ? (
+              <div className="text-center py-20 space-y-6">
+                <div className="w-20 h-20 bg-cyan-100 text-cyan-700 rounded-full flex items-center justify-center mx-auto">
+                  <ClipboardList className="w-10 h-10" />
+                </div>
+                <h2 className="text-2xl font-lexend font-bold text-slate-900">Privacy Notice Required</h2>
+                <p className="text-slate-500 max-w-sm mx-auto font-atkinson">
+                  Kailangan mong tanggapin ang aming Privacy Notice para makapagsimula ng iyong rehistrasyon.
+                </p>
+                <button 
+                  onClick={() => setShowPrivacyNotice(true)}
+                  className="bg-slate-900 text-white font-bold px-8 py-3 rounded-xl hover:bg-slate-800 transition-all cursor-pointer"
+                >
+                  Basahin ang Privacy Notice
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleRegister} className="grid grid-cols-1 md:grid-cols-2 gap-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
               
               {/* Profile Details Column */}
               <div className="space-y-6">
@@ -282,9 +307,20 @@ export default function RegisterPage() {
               </div>
 
             </form>
+            )}
           </div>
         </div>
       </div>
+
+      <PrivacyNoticeModal 
+        isOpen={showPrivacyNotice}
+        onClose={() => {
+          if (!hasAcceptedPrivacy) router.push('/login');
+          setShowPrivacyNotice(false);
+        }}
+        onAccept={handlePrivacyAccept}
+        isLoading={false}
+      />
     </div>
   );
 }
