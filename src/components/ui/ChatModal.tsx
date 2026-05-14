@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Send, User } from 'lucide-react';
 import { KapAvatar } from './KapAvatar';
+import { preloadImages, extractImageUrls } from '@/lib/utils/image';
 
 import ReactMarkdown from 'react-markdown';
 
@@ -33,18 +34,30 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Initial greeting
+  // Initialize messages from sessionStorage if available
   useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      setMessages([
-        {
+    if (isOpen) {
+      const savedMessages = sessionStorage.getItem('chat_history');
+      if (savedMessages) {
+        setMessages(JSON.parse(savedMessages));
+      } else if (messages.length === 0) {
+        const initialMsg: ChatMessage = {
           id: 'msg-0',
           sender: 'bot',
           text: 'Magandang araw! Ako si Kap, ang inyong Barangay Bot. Paano ko kayo matutulungan ngayon?'
-        }
-      ]);
+        };
+        setMessages([initialMsg]);
+        sessionStorage.setItem('chat_history', JSON.stringify([initialMsg]));
+      }
     }
-  }, [isOpen, messages.length]);
+  }, [isOpen]);
+
+  // Persist messages to sessionStorage whenever they change
+  useEffect(() => {
+    if (messages.length > 0) {
+      sessionStorage.setItem('chat_history', JSON.stringify(messages));
+    }
+  }, [messages]);
 
   // Scroll to bottom on new message
   useEffect(() => {
@@ -79,6 +92,12 @@ export const ChatModal: React.FC<ChatModalProps> = ({ isOpen, onClose }) => {
 
       if (!response.ok) {
         throw new Error(data.error || 'Failed to fetch response');
+      }
+
+      // Preload any images found in the response
+      const imageUrls = extractImageUrls(data.response);
+      if (imageUrls.length > 0) {
+        await preloadImages(imageUrls);
       }
 
       const botMsg: ChatMessage = {

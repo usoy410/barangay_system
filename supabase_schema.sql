@@ -110,40 +110,6 @@ create trigger set_announcements_updated_at
 before update on public.announcements
 for each row execute procedure public.handle_updated_at();
 
--- 5. Storage Configuration (Document Templates)
--- Note: This requires the storage extension to be enabled in Supabase
-
--- Create the bucket if it doesn't exist
-insert into storage.buckets (id, name, public)
-values ('document-templates', 'document-templates', true)
-on conflict (id) do nothing;
-
--- 6. Storage Policies
--- Allow public access to read templates
-create policy "Templates are publicly accessible"
-  on storage.objects for select
-  using ( bucket_id = 'document-templates' );
-
--- Allow authenticated admins to manage templates
-create policy "Admins can upload templates"
-  on storage.objects for insert
-  with check ( bucket_id = 'document-templates' );
-
-create policy "Admins can update templates"
-  on storage.objects for update
-  using ( bucket_id = 'document-templates' );
-
-create policy "Admins can delete templates"
-  on storage.objects for delete
-  using ( bucket_id = 'document-templates' );
-
--- 7. Incident Photos Bucket
-insert into storage.buckets (id, name, public)
-values ('incident-photos', 'incident-photos', true)
-on conflict (id) do nothing;
-
-create policy "Anyone can upload incident photos" on storage.objects for insert with check (bucket_id = 'incident-photos');
-create policy "Anyone can view incident photos" on storage.objects for select using (bucket_id = 'incident-photos');
 
 -- 8. Audit Logging System
 -- This table tracks all modifications to sensitive data for accountability and DPA compliance.
@@ -167,6 +133,8 @@ create policy "Officials can view audit logs" on public.audit_logs for select us
         and role in ('Official', 'Admin')
     )
 );
+
+
 
 -- Automated Audit Function
 create or replace function public.process_audit_log()
@@ -228,3 +196,37 @@ for each row execute procedure public.process_audit_log();
 create trigger audit_announcements_changes
 after insert or update or delete on public.announcements
 for each row execute procedure public.process_audit_log();
+
+
+-- 5. Storage Configuration (Document Templates)
+
+insert into storage.buckets (id, name, public)
+values ('document-templates', 'document-templates', true)
+on conflict (id) do nothing;
+
+-- 6. Storage Policies
+-- Allow public access to read templates
+create policy "Templates are publicly accessible"
+  on storage.objects for select
+  using ( bucket_id = 'document-templates' );
+
+-- Allow authenticated admins to manage templates
+create policy "Admins can upload templates"
+  on storage.objects for insert
+  with check ( bucket_id = 'document-templates' );
+
+create policy "Admins can update templates"
+  on storage.objects for update
+  using ( bucket_id = 'document-templates' );
+
+create policy "Admins can delete templates"
+  on storage.objects for delete
+  using ( bucket_id = 'document-templates' );
+
+-- 7. Incident Photos Bucket
+insert into storage.buckets (id, name, public)
+values ('incident-photos', 'incident-photos', true)
+on conflict (id) do nothing;
+
+create policy "Anyone can upload incident photos" on storage.objects for insert with check (bucket_id = 'incident-photos');
+create policy "Anyone can view incident photos" on storage.objects for select using (bucket_id = 'incident-photos');

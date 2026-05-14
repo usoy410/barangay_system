@@ -23,6 +23,8 @@ export const metadata: Metadata = {
   description: "Konektado Kita - A comprehensive digital solution for efficient community management, resident records, and community services.",
 };
 
+import { FramePreloader } from "@/components/ui/FramePreloader";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,7 +35,10 @@ export default function RootLayout({
       lang="en"
       className={`${lexend.variable} ${sourceSans.variable} ${atkinson.variable} h-full antialiased`}
     >
-      <body className="min-h-full font-atkinson text-slate-900 bg-slate-50">{children}</body>
+      <body className="min-h-full font-atkinson text-slate-900 bg-slate-50">
+        <FramePreloader />
+        {children}
+      </body>
     </html>
   );
 }
