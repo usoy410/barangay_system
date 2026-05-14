@@ -161,7 +161,7 @@ export function AnnouncementForm({ initialData, isEditing }: AnnouncementFormPro
 
 
             {/* Scheduling */}
-            <div className="p-8 bg-slate-50 rounded-[2rem] border border-slate-100 space-y-6">
+            <div className="p-8 bg-slate-50 rounded-4xl border border-slate-100 space-y-6">
               <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-cyan-600" />
                 Schedule Visibility

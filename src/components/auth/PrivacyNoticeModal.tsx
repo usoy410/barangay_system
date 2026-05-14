@@ -51,7 +51,7 @@ export default function PrivacyNoticeModal({ isOpen, onClose, onAccept, isLoadin
         className={`bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100 flex flex-col max-h-[90vh] transition-all duration-500 ease-out ${isAnimating ? 'translate-y-0 scale-100' : 'translate-y-8 scale-[0.98]'}`}
       >
         {/* Header */}
-        <div className="bg-cyan-700 p-8 text-white relative flex-shrink-0">
+        <div className="bg-cyan-700 p-8 text-white relative shrink-0">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-2xl font-lexend font-bold flex items-center gap-3">
               <ShieldCheck className="w-8 h-8" />
@@ -182,14 +182,14 @@ export default function PrivacyNoticeModal({ isOpen, onClose, onAccept, isLoadin
 
           {!allChecked && (
             <div className="flex items-center gap-3 p-4 bg-amber-50 border border-amber-100 rounded-xl text-amber-700 text-sm font-medium animate-in fade-in slide-in-from-bottom-2">
-              <AlertCircle className="w-5 h-5 flex-shrink-0" />
+              <AlertCircle className="w-5 h-5 shrink-0" />
               Kailangang tanggapin ang lahat ng kondisyon bago mag-rehistro.
             </div>
           )}
         </div>
 
         {/* Footer */}
-        <div className="p-8 border-t border-slate-100 bg-slate-50/50 flex-shrink-0">
+        <div className="p-8 border-t border-slate-100 bg-slate-50/50 shrink-0">
           <button
             onClick={onAccept}
             disabled={!allChecked || isLoading}

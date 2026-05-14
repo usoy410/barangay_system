@@ -23,7 +23,7 @@ export const IncidentCard: React.FC<IncidentCardProps> = ({
   return (
     <div className="bg-white border border-slate-200 rounded-3xl p-6 hover:shadow-xl transition-all duration-200 ease-out group">
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-        <div className="flex-grow">
+        <div className="grow">
           <div className="flex items-center gap-2 mb-2">
             <StatusBadge status={incident.status} />
             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">

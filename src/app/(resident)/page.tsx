@@ -44,7 +44,7 @@ export default function CitizenHome() {
         message={<>Maligayang pagdating! Ako ang inyong AI assistant. <b>Konektado Kita.</b></>}
       />
 
-      <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-8 space-y-8">
+      <main className="grow max-w-3xl w-full mx-auto px-6 py-8 space-y-8">
 
         {/* Announcements Carousel */}
         <section>

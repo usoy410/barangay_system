@@ -73,7 +73,7 @@ export const SuccessVideoModal: React.FC<SuccessVideoModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden pointer-events-none">
+    <div className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden pointer-events-none">
       {/* Backdrop: Appears after video ends */}
       <div 
         className={`absolute inset-0 bg-slate-950/80 backdrop-blur-2xl transition-all duration-300 ease-out pointer-events-auto ${videoEnded ? 'opacity-100 visible' : 'opacity-0 invisible'}`} 

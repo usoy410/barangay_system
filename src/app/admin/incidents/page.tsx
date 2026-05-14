@@ -86,7 +86,7 @@ export default function IncidentsPage() {
 
   return (
     <React.Fragment>
-      <main className="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12 font-lexend">
           <div>
             <div className="flex items-center gap-3 mb-2">
@@ -146,7 +146,7 @@ export default function IncidentsPage() {
 
           <div className="space-y-6">
             <h2 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Security Stats</h2>
-            <div className="bg-slate-900 rounded-[2rem] p-8 text-white">
+            <div className="bg-slate-900 rounded-4xl p-8 text-white">
               <ShieldAlert className="w-10 h-10 text-red-500 mb-6" />
               <div className="space-y-4">
                 <StatItem label="Pending" value={stats.pending} color="text-amber-400" />
@@ -164,7 +164,7 @@ export default function IncidentsPage() {
               </div>
             </div>
             
-            <div className="bg-white border border-slate-200 rounded-[2rem] p-8">
+            <div className="bg-white border border-slate-200 rounded-4xl p-8">
               <h3 className="font-level text-slate-900 font-black mb-2">Safety Protocol</h3>
               <p className="text-sm text-slate-500 leading-relaxed">
                 All reports are encrypted and sent directly to the Barangay command center. 

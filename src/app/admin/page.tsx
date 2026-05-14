@@ -40,9 +40,9 @@ export default function Dashboard() {
 
   return (
     <React.Fragment>
-      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <main className="grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Hero Section */}
-        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-[3rem] p-12 mb-12 relative overflow-hidden text-white shadow-2xl shadow-slate-200">
+        <div className="bg-linear-to-br from-slate-900 to-slate-800 rounded-[3rem] p-12 mb-12 relative overflow-hidden text-white shadow-2xl shadow-slate-200">
           <div className="relative z-10 max-w-2xl">
             <h1 className="text-5xl font-lexend font-black mb-6 leading-tight tracking-tight">
               Good Morning, <span className="text-cyan-400">Admin</span>.

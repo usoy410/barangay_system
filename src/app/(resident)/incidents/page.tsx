@@ -91,7 +91,7 @@ export default function CitizenIncidents() {
         animationType="standby"
       />
 
-      <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-8">
+      <main className="grow max-w-3xl w-full mx-auto px-6 py-8">
         <div className="bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm">
           <SuccessVideoModal 
             isOpen={submitted} 
@@ -125,7 +125,7 @@ export default function CitizenIncidents() {
                 </div>
 
                 <div>
-                  <label className="block text-slate-700 font-bold mb-2 text-lg flex items-center gap-2">
+                  <label className="flex items-center gap-2 text-slate-700 font-bold mb-2 text-lg">
                     <MapPin className="w-5 h-5 text-slate-500" /> Location
                   </label>
                   <input 

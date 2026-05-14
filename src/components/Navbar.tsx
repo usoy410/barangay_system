@@ -93,7 +93,7 @@ export const Navbar: React.FC = () => {
                     : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
                 }`}
               >
-                <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white shadow-inner">
+                <div className="w-9 h-9 bg-linear-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white shadow-inner">
                   <Users className="w-5 h-5" />
                 </div>
                 <ChevronDown className={`w-4 h-4 text-white/50 transition-transform duration-300 ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
@@ -125,7 +125,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-[60] md:hidden animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-60 md:hidden animate-in fade-in duration-200">
           {/* Backdrop Blur */}
           <div 
             className="absolute inset-0 bg-slate-900/60 backdrop-blur-md" 

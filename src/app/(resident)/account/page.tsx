@@ -126,7 +126,7 @@ export default function AccountPage() {
   if (!resident) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-center font-atkinson pb-32">
-        <div className="w-24 h-24 bg-amber-50 text-amber-500 rounded-[2rem] flex items-center justify-center mb-6 shadow-xl shadow-amber-900/10 border border-amber-100">
+        <div className="w-24 h-24 bg-amber-50 text-amber-500 rounded-4xl flex items-center justify-center mb-6 shadow-xl shadow-amber-900/10 border border-amber-100">
           <AlertCircle className="w-12 h-12" />
         </div>
         <h1 className="text-3xl font-black text-slate-900 mb-2">Profile Not Found</h1>
@@ -157,7 +157,7 @@ export default function AccountPage() {
       <div className="bg-slate-900 pt-32 pb-20 px-6 text-white relative overflow-hidden">
         <div className="relative z-10 max-w-2xl mx-auto flex items-center justify-between gap-6">
           <div className="flex items-center gap-6">
-            <div className="w-24 h-24 bg-cyan-600 rounded-[2rem] flex items-center justify-center shadow-2xl shadow-cyan-900/50">
+            <div className="w-24 h-24 bg-cyan-600 rounded-4xl flex items-center justify-center shadow-2xl shadow-cyan-900/50">
               <User className="w-12 h-12 text-white" />
             </div>
             <div>
@@ -185,7 +185,7 @@ export default function AccountPage() {
 
       <div className="max-w-2xl mx-auto px-6 -mt-10 relative z-20 space-y-6 pb-20">
         {/* Info Card */}
-        <div className="bg-white rounded-[2rem] p-8 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col gap-6">
+        <div className="bg-white rounded-4xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col gap-6">
           <InfoItem icon={<Phone className="w-5 h-5" />} label="Mobile Number" value={resident?.mobile_number || ''} />
           <InfoItem icon={<MapPin className="w-5 h-5" />} label="Permanent Address" value={resident?.address || ''} />
           <InfoItem icon={<Calendar className="w-5 h-5" />} label="Member Since" value={new Date(resident?.created_at || '').toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} />
@@ -193,7 +193,7 @@ export default function AccountPage() {
 
         {/* History Tabs */}
         <div>
-          <div className="flex bg-slate-100 p-1.5 rounded-[1.5rem] mb-6">
+          <div className="flex bg-slate-100 p-1.5 rounded-3xl mb-6">
             <button 
               onClick={() => setActiveTab('requests')}
               className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${activeTab === 'requests' ? 'bg-white text-cyan-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
@@ -248,7 +248,7 @@ export default function AccountPage() {
                 )}
               </>
             ) : (
-              <div className="bg-white rounded-[2rem] p-12 text-center border border-slate-100 shadow-sm">
+              <div className="bg-white rounded-4xl p-12 text-center border border-slate-100 shadow-sm">
                 <p className="text-slate-400 font-medium">Select a tab above to view your history.</p>
               </div>
             )}
@@ -260,7 +260,7 @@ export default function AccountPage() {
 }
 
 const EmptyHistory = ({ icon, message, link, linkText }: any) => (
-  <div className="bg-white rounded-[2rem] p-12 text-center border border-slate-100">
+  <div className="bg-white rounded-4xl p-12 text-center border border-slate-100">
     <div className="text-slate-200 flex justify-center mb-4">{icon}</div>
     <p className="text-slate-500 font-medium mb-4">{message}</p>
     <a href={link} className="text-cyan-600 font-black text-xs uppercase tracking-widest hover:underline">{linkText}</a>
@@ -274,7 +274,7 @@ const IncidentStatusCard = ({ incident }: { incident: Incident }) => {
   const isSpam = incident.status === 'Spam';
 
   return (
-    <div className="group bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm flex items-center justify-between hover:border-amber-200 transition-all">
+    <div className="group bg-white rounded-4xl p-6 border border-slate-100 shadow-sm flex items-center justify-between hover:border-amber-200 transition-all">
       <div className="flex items-center gap-4">
         <div className={`p-4 rounded-2xl ${isResolved ? 'bg-emerald-50 text-emerald-600' : isSpam ? 'bg-slate-50 text-slate-500' : 'bg-amber-50 text-amber-600'}`}>
           {isResolved ? <History className="w-6 h-6" /> : <Clock className="w-6 h-6" />}
@@ -316,7 +316,7 @@ const RequestStatusCard = ({ request }: { request: ClearanceRequest }) => {
   const isVoid = request.status === 'Void';
 
   return (
-    <div className="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm flex items-center justify-between">
+    <div className="bg-white rounded-4xl p-6 border border-slate-100 shadow-sm flex items-center justify-between">
       <div className="flex items-center gap-4">
         <div className={`p-4 rounded-2xl ${isIssued ? 'bg-emerald-50 text-emerald-600' : isVoid ? 'bg-red-50 text-red-600' : 'bg-amber-50 text-amber-600'}`}>
           {isIssued ? <CheckCircle2 className="w-6 h-6" /> : isVoid ? <AlertCircle className="w-6 h-6" /> : <Clock className="w-6 h-6" />}

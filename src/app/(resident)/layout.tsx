@@ -9,7 +9,7 @@ export default function ResidentLayout({
     <div className="min-h-screen flex flex-col bg-slate-50">
       <CitizenNavigation />
       
-      <div className="flex-grow pb-[calc(5rem+env(safe-area-inset-bottom,0px))] md:pb-0">
+      <div className="grow pb-[calc(5rem+env(safe-area-inset-bottom,0px))] md:pb-0">
         {children}
       </div>
     </div>

@@ -60,7 +60,7 @@ export default function AnnouncementsPage() {
   );
 
   return (
-    <div className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
         <div>
           <h1 className="text-4xl font-lexend font-black text-slate-900 mb-2">Announcements</h1>
@@ -76,8 +76,8 @@ export default function AnnouncementsPage() {
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm mb-8 flex items-center gap-4">
-        <div className="relative flex-grow">
+      <div className="bg-white p-6 rounded-4xl border border-slate-100 shadow-sm mb-8 flex items-center gap-4">
+        <div className="relative grow">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
           <input 
             type="text" 
@@ -92,7 +92,7 @@ export default function AnnouncementsPage() {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[1, 2, 3, 4].map(i => (
-            <div key={i} className="h-48 bg-slate-100 animate-pulse rounded-[2rem]" />
+            <div key={i} className="h-48 bg-slate-100 animate-pulse rounded-4xl" />
           ))}
         </div>
       ) : filteredAnnouncements.length === 0 ? (
@@ -137,7 +137,7 @@ const AnnouncementCard = ({
 
   return (
     <div className={clsx(
-      "bg-white rounded-[2rem] border transition-all duration-300 group hover:shadow-xl",
+      "bg-white rounded-4xl border transition-all duration-300 group hover:shadow-xl",
       announcement.is_active ? "border-slate-100" : "opacity-60 border-slate-200"
     )}>
       <div className="p-8">

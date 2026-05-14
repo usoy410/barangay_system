@@ -112,13 +112,13 @@ export function AnnouncementCarousel({ announcements }: AnnouncementCarouselProp
                 alt={current.title}
                 className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent md:bg-gradient-to-r" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent md:bg-linear-to-r" />
             </div>
           ) : (
-            <div className={clsx("md:w-1/3 h-3 md:h-auto bg-gradient-to-br", theme.gradient)} />
+            <div className={clsx("md:w-1/3 h-3 md:h-auto bg-linear-to-br", theme.gradient)} />
           )}
 
-          <div className="flex-grow p-8 md:p-10 flex flex-col justify-center">
+          <div className="grow p-8 md:p-10 flex flex-col justify-center">
             <div className="flex items-center gap-3 mb-4">
               <span className={clsx(
                 "flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-sm",

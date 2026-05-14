@@ -114,7 +114,7 @@ export default function ServicesPage() {
 
   return (
     <React.Fragment>
-      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <div className="flex items-center gap-3 mb-2">
@@ -203,7 +203,7 @@ export default function ServicesPage() {
           <div className="flex items-center gap-3 mb-6">
             <Users className="w-5 h-5 text-slate-400" />
             <h2 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Manual Issuance</h2>
-            <div className="h-px flex-grow bg-slate-100" />
+            <div className="h-px grow bg-slate-100" />
           </div>
         </div>
 
@@ -267,7 +267,7 @@ export default function ServicesPage() {
       )}
 
       {isTemplateModalOpen && (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-70 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsTemplateModalOpen(false)} />
           <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <TemplateManager />
@@ -287,7 +287,7 @@ export default function ServicesPage() {
 const ServiceCard = ({ icon, title, description, onClick, disabled = false }: any) => (
   <div 
     onClick={!disabled ? onClick : undefined}
-    className={`bg-white p-8 rounded-[2rem] border-2 transition-all duration-300 flex flex-col items-start ${
+    className={`bg-white p-8 rounded-4xl border-2 transition-all duration-300 flex flex-col items-start ${
       disabled 
         ? 'opacity-50 grayscale cursor-not-allowed border-slate-100' 
         : 'border-transparent hover:border-cyan-200 hover:shadow-2xl hover:shadow-cyan-100 cursor-pointer shadow-sm group'
@@ -297,7 +297,7 @@ const ServiceCard = ({ icon, title, description, onClick, disabled = false }: an
       {icon}
     </div>
     <h3 className="text-xl font-black text-slate-900 mb-3 tracking-tight">{title}</h3>
-    <p className="text-slate-500 text-sm leading-relaxed mb-8 flex-grow font-medium">
+    <p className="text-slate-500 text-sm leading-relaxed mb-8 grow font-medium">
       {description}
     </p>
     {!disabled && (

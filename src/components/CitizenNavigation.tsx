@@ -49,13 +49,13 @@ export default function CitizenNavigation() {
 
   return (
     <>
-      {/* Desktop Header (Hidden on Mobile) */}
-      <header className={`hidden md:flex fixed top-0 left-0 right-0 h-20 z-50 items-center px-12 justify-between transition-all duration-200 ease-out ${isScrolled
+      {/* Global Top Header (Logo visible on all screens) */}
+      <header className={`flex fixed top-0 left-0 right-0 h-16 md:h-20 z-50 items-center px-6 md:px-12 justify-between transition-all duration-200 ease-out ${isScrolled
         ? `${activeThemeClass} shadow-lg border-b border-white/10`
         : 'bg-transparent'
         }`}>
         <Link href="/" className="flex items-center gap-3 group cursor-pointer">
-          <div className="relative h-10 w-44 transition-all duration-300">
+          <div className="relative h-8 w-32 md:h-10 md:w-44 transition-all duration-300">
             <Image
               src="/images/Konektado_logo.png"
               alt="Konektado"
@@ -66,7 +66,8 @@ export default function CitizenNavigation() {
           </div>
         </Link>
 
-        <nav className="flex items-center gap-1">
+        {/* Desktop-only Nav Links (Mobile uses bottom nav) */}
+        <nav className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
             <Link
               key={link.href}

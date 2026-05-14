@@ -37,7 +37,7 @@ This system addresses these challenges by providing:
 - **Barangay Directory & Contact**: Direct access to official contact numbers with pre-defined Tagalog communication templates for professional inquiries.
 - **Template Management**: Admin controls for document templates, allowing for customizable output formats.
 - **Document Preview & Export**: Generation of documents in `.docx` and `.pdf` formats using professional-grade templating.
-- **AI Assistant Bot**: An interactive chatbot powered by Google Generative AI (Gemini) embedded in resident pages to dynamically answer citizen inquiries.
+- **AI Assistant Bot**: An interactive chatbot powered by Google Generative AI (Gemini) embedded in resident pages to dynamically answer citizen inquiries, featuring polished macro-whitespace layouts to cleanly separate the fixed navigation logo from floating indicator UI elements.
 - **Real-time Dashboard**: Overview of total residents, pending requests, and active incidents.
 
 ## 🛠️ Tools & Libraries Used

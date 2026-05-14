@@ -103,7 +103,7 @@ export default function CitizenServices() {
         animationType="thinking"
       />
 
-      <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-8">
+      <main className="grow max-w-3xl w-full mx-auto px-6 py-8">
         {!selectedService ? (
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-slate-800 mb-6 font-lexend">Select a Document</h2>
@@ -135,7 +135,7 @@ export default function CitizenServices() {
             </button>
           </div>
         ) : (
-          <div className="bg-white border-2 border-slate-200 rounded-[2rem] p-8 shadow-sm">
+          <div className="bg-white border-2 border-slate-200 rounded-4xl p-8 shadow-sm">
             <button 
               onClick={() => {
                 setSelectedService(null);
@@ -191,7 +191,7 @@ export default function CitizenServices() {
                 <button 
                   type="submit" 
                   disabled={isSubmitting || isCheckingProfile}
-                  className="w-full bg-slate-900 text-white font-black py-5 rounded-[2rem] text-xl hover:bg-slate-800 transition-all cursor-pointer disabled:opacity-50 shadow-xl shadow-slate-200 active:scale-[0.98] min-h-[44px]"
+                  className="w-full bg-slate-900 text-white font-black py-5 rounded-4xl text-xl hover:bg-slate-800 transition-all cursor-pointer disabled:opacity-50 shadow-xl shadow-slate-200 active:scale-[0.98] min-h-[44px]"
                 >
                   {isSubmitting ? 'Sending Request...' : 'Submit Request'}
                 </button>

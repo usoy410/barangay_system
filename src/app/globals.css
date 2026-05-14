@@ -12,7 +12,7 @@
   --font-mono: var(--font-geist-mono);
   --font-atkinson: var(--font-atkinson);
   --font-lexend: var(--font-lexend);
-  
+
   /* Emil Design Custom Easings */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
@@ -22,21 +22,45 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #171717; /* Keep it dark for now to avoid visibility issues on light components */
+    --foreground: #171717;
+    /* Keep it dark for now to avoid visibility issues on light components */
   }
 }
 
 body {
   background: var(--background);
-  color: #0f172a; /* Force dark slate for body text */
+  color: #0f172a;
+  /* Force dark slate for body text */
 }
 
-input, select, textarea, option {
-  color: #0f172a !important; /* Force dark slate for all form elements */
-  background-color: #ffffff !important; /* Ensure white background for inputs */
+input,
+select,
+textarea,
+option {
+  color: #0f172a !important;
+  /* Force dark slate for all form elements */
+  background-color: #ffffff !important;
+  /* Ensure white background for inputs */
 }
 
 ::placeholder {
-  color: #475569 !important; /* slate-600 for even better contrast */
+  color: #475569 !important;
+  /* slate-600 for even better contrast */
   opacity: 1;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 2s ease-in-out infinite;
 }

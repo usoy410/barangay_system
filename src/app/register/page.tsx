@@ -87,7 +87,7 @@ export default function RegisterPage() {
         </Link>
       </div>
 
-      <div className="flex-grow flex items-center justify-center px-6">
+      <div className="grow flex items-center justify-center px-6">
         <div className="max-w-4xl w-full bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
           
           <div className="bg-cyan-700 p-10 text-white relative">
@@ -190,7 +190,7 @@ export default function RegisterPage() {
                 </div>
 
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1.5 text-sm flex items-center gap-2">
+                  <label className="flex items-center gap-2 text-slate-700 font-bold mb-1.5 text-sm">
                     <MapPin className="w-4 h-4" /> Permanent Address
                   </label>
                   <textarea 
@@ -263,7 +263,7 @@ export default function RegisterPage() {
                     <Lock className="w-4 h-4" /> Account Security
                   </h3>
                   <div>
-                    <label className="block text-slate-700 font-bold mb-1.5 text-sm text-slate-500">Create Password</label>
+                    <label className="block text-slate-700 font-bold mb-1.5 text-sm">Create Password</label>
                     <div className="relative">
                       <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                       <input 

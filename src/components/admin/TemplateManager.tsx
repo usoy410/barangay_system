@@ -97,7 +97,7 @@ export const TemplateManager: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-[2rem] border border-slate-200 overflow-hidden shadow-sm">
+    <div className="bg-white rounded-4xl border border-slate-200 overflow-hidden shadow-sm">
       <div className="bg-slate-900 p-8 text-white flex items-center justify-between">
         <div>
           <h3 className="text-xl font-black tracking-tight">Template Settings</h3>

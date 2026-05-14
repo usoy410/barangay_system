@@ -10,6 +10,9 @@ interface BotHeaderProps {
   animationType?: 'standby' | 'wave' | 'thinking';
 }
 
+/**
+ * BotHeader component with a game-like "Click me" indicator above the bot.
+ */
 export function BotHeader({ title = "Magandang Araw!", message, animationType = 'wave' }: BotHeaderProps) {
   const [currentAnim, setCurrentAnim] = useState(animationType);
   const [frame, setFrame] = useState(0);
@@ -56,14 +59,26 @@ export function BotHeader({ title = "Magandang Araw!", message, animationType = 
   const imageSrc = `/bot_frames/${folderName}/${currentAnim}_${frame}.png`;
 
   return (
-    <header className="bg-slate-900 text-white pt-5 md:pt-20 px-4 md:px-8 rounded-b-4xl shadow-md relative overflow-hidden flex items-end gap-3 md:gap-6">
+    <header className="bg-slate-900 text-white pt-28 md:pt-28 px-4 md:px-8 rounded-b-4xl shadow-md relative overflow-hidden flex items-end gap-3 md:gap-6">
       <DecorativeLeaves variant="dark" />
 
+
+
       {/* Bot Avatar on the Left (Touches the bottom) */}
-      <div 
+      <div
         className="relative z-10 w-52 h-52 md:w-58 md:h-58 shrink-0 drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)] md:ml-1 translate-y-1 cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] active:scale-[0.97]"
         onClick={() => setIsChatOpen(true)}
       >
+
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 animate-indicator-float pointer-events-none select-none">
+          <p className="text-sm font-semibold">
+            Click me
+          </p>
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-lg">
+            <path d="M7 10L0.937822 0.25L13.0622 0.25L7 10Z" fill="#fcfcfc" />
+          </svg>
+        </div>
+
         {/* Using standard img for rapid frame swapping to avoid next/image re-optimization delays on each tick */}
         <img
           src={imageSrc}
